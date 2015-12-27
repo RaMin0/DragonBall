@@ -1,0 +1,6 @@
+* NonPlayableFighter shouldn't be abstract (no subclasses)
+* Extra constructor for loading every attribute in Character (when loading saved games)
+* Save should save every single thing
+* Add Game.load(textFile) to load game from saved file
+* Collectibles should be enum in Cell and counters in Player. No need for classes
+* Attacks should be: Active (causes effect/damage) or Passive (Charge and Transformation --> hard coded)
