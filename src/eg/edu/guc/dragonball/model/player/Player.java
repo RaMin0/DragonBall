@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import eg.edu.guc.dragonball.model.character.PlayableCharacter;
 
 public class Player {
-	private ArrayList<PlayableCharacter> characters;
+	private ArrayList<PlayableCharacter> characters = new ArrayList<>();
 	private PlayableCharacter activeCharacter;
 	private int senzuBeans;
 	private int dragonBalls;
