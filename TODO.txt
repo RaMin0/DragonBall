@@ -10,8 +10,6 @@ PENDING:
 ========
 [ ] Save should save every single thing
 [ ] Add Game.load(textFile) to load game from saved file
-[ ] Enhance map generation to ensure all conditions are satisfied
-
 
 COMPLETED:
 ==========
@@ -20,3 +18,4 @@ COMPLETED:
 [R] The map should have only one strong foe
 [R] Extra constructor for loading every attribute in Character (when loading saved games)
 [R] New Attacks hierarchy
+[R] Enhance map generation to ensure all conditions are satisfied
