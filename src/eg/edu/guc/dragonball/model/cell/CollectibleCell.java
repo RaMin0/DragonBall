@@ -14,7 +14,7 @@ public class CollectibleCell extends Cell {
 	}
 
 	@Override
-	public void handle(Player player) {
+	public void onStep(Player player) {
 		switch (getCollectible()) {
 		case SENZU_BEAN:
 			player.setSenzuBeans(player.getSenzuBeans() + 1);
@@ -27,6 +27,6 @@ public class CollectibleCell extends Cell {
 
 	@Override
 	public String toString() {
-		return "C(" + getCollectible().name().substring(0, 1) + ")";
+		return "[" + Character.toLowerCase(getCollectible().name().charAt(0)) + "]";
 	}
 }

@@ -2,29 +2,68 @@ package eg.edu.guc.dragonball.model.player;
 
 import java.util.ArrayList;
 
-import eg.edu.guc.dragonball.model.character.PlayableCharacter;
+import eg.edu.guc.dragonball.model.attack.SuperAttack;
+import eg.edu.guc.dragonball.model.attack.UltimateAttack;
+import eg.edu.guc.dragonball.model.character.fighter.PlayableFighter;
 
 public class Player {
-	private ArrayList<PlayableCharacter> characters = new ArrayList<>();
-	private PlayableCharacter activeCharacter;
+	private String name;
+	private ArrayList<PlayableFighter> fighters;
+	private ArrayList<SuperAttack> superAttacks;
+	private ArrayList<UltimateAttack> ultimateAttacks;
 	private int senzuBeans;
 	private int dragonBalls;
+	private PlayableFighter activeFighter;
 	private int exploredMaps;
 
-	public ArrayList<PlayableCharacter> getCharacters() {
-		return characters;
+	public Player(String name) {
+		this(name, new ArrayList<PlayableFighter>(), new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), 0,
+				0, null, 1);
 	}
 
-	public void setCharacters(ArrayList<PlayableCharacter> characters) {
-		this.characters = characters;
+	public Player(String name, ArrayList<PlayableFighter> fighters, ArrayList<SuperAttack> superAttacks,
+			ArrayList<UltimateAttack> ultimateAttacks, int senzuBeans, int dragonBalls,
+			PlayableFighter activeFighter, int exploredMaps) {
+		this.name = name;
+		this.fighters = fighters;
+		this.superAttacks = superAttacks;
+		this.ultimateAttacks = ultimateAttacks;
+		this.senzuBeans = senzuBeans;
+		this.dragonBalls = dragonBalls;
+		this.activeFighter = activeFighter;
+		this.exploredMaps = exploredMaps;
 	}
 
-	public PlayableCharacter getActiveCharacter() {
-		return activeCharacter;
+	public String getName() {
+		return name;
 	}
 
-	public void setActiveCharacter(PlayableCharacter activeCharacter) {
-		this.activeCharacter = activeCharacter;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ArrayList<PlayableFighter> getFighters() {
+		return fighters;
+	}
+
+	public void setFighters(ArrayList<PlayableFighter> fighters) {
+		this.fighters = fighters;
+	}
+
+	public ArrayList<SuperAttack> getSuperAttacks() {
+		return superAttacks;
+	}
+
+	public void setSuperAttacks(ArrayList<SuperAttack> superAttacks) {
+		this.superAttacks = superAttacks;
+	}
+
+	public ArrayList<UltimateAttack> getUltimateAttacks() {
+		return ultimateAttacks;
+	}
+
+	public void setUltimateAttacks(ArrayList<UltimateAttack> ultimateAttacks) {
+		this.ultimateAttacks = ultimateAttacks;
 	}
 
 	public int getSenzuBeans() {
@@ -43,6 +82,14 @@ public class Player {
 		this.dragonBalls = dragonBalls;
 
 		// TODO: Dragon mode
+	}
+
+	public PlayableFighter getActiveFighter() {
+		return activeFighter;
+	}
+
+	public void setActiveFighter(PlayableFighter activeFighter) {
+		this.activeFighter = activeFighter;
 	}
 
 	public int getExploredMaps() {

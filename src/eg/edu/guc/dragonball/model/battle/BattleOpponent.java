@@ -6,4 +6,6 @@ public interface BattleOpponent {
 	void onMyTurn();
 
 	void onFoeTurn();
+
+	void onWin(BattleOpponent foe);
 }

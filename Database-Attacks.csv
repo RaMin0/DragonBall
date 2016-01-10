@@ -1,4 +1,4 @@
-# Type,Name,(Damage)
+# Type,Name,Damage
 SA,Kamehameha,250
 SA,Big Bang Attack,250
 SA,Death Beam,300
@@ -9,5 +9,5 @@ UA,Final Flash,450
 UA,Vanishing Ball,500
 UA,Special Beam Cannon,400
 UA,Instant Kamehameha,400
-MC,Maximum Charge
-SS,Super Saiyan
+MC,Maximum Charge,0
+SS,Super Saiyan,0

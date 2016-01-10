@@ -3,8 +3,13 @@ package eg.edu.guc.dragonball.model.character.fighter;
 public class Saiyan extends PlayableFighter {
 	private boolean transformed;
 
-	public Saiyan() {
-		super("Saiyan", 1000, 150, 100, 5, 3);
+	public Saiyan(String name) {
+		super(name, 150, 100, 1000, 5, 3);
+	}
+
+	public Saiyan(String name, boolean transformed) {
+		this(name);
+		this.transformed = transformed;
 	}
 
 	public boolean isTransformed() {

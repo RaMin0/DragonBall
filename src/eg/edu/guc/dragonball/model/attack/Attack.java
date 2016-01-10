@@ -1,17 +1,23 @@
 package eg.edu.guc.dragonball.model.attack;
 
-import eg.edu.guc.dragonball.model.character.NonPlayableCharacter;
-import eg.edu.guc.dragonball.model.character.PlayableCharacter;
+import eg.edu.guc.dragonball.exceptions.DragonBallInvalidAttackException;
+import eg.edu.guc.dragonball.model.battle.BattleOpponent;
 
 public abstract class Attack {
+	private String name;
 	private int damage;
 
-	public Attack() {
-
+	public Attack(String name, int damage) {
+		this.name = name;
+		this.damage = damage;
 	}
 
-	public Attack(int damage) {
-		this.damage = damage;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getDamage() {
@@ -22,5 +28,5 @@ public abstract class Attack {
 		this.damage = damage;
 	}
 
-	public abstract void onUse(PlayableCharacter me, NonPlayableCharacter foe);
+	public abstract void onUse(BattleOpponent me, BattleOpponent foe) throws DragonBallInvalidAttackException;
 }

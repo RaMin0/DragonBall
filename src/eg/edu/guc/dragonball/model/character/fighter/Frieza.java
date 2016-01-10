@@ -1,8 +1,8 @@
 package eg.edu.guc.dragonball.model.character.fighter;
 
 public class Frieza extends PlayableFighter {
-	public Frieza() {
-		super("Frieza", 1100, 75, 75, 4, 4);
+	public Frieza(String name) {
+		super(name, 75, 75, 1100, 4, 4);
 	}
 
 	@Override

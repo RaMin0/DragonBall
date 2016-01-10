@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import eg.edu.guc.dragonball.model.attack.SuperAttack;
 import eg.edu.guc.dragonball.model.attack.UltimateAttack;
+import eg.edu.guc.dragonball.model.player.Player;
 
 public class Dragon {
 	private String name;
@@ -40,5 +41,9 @@ public class Dragon {
 
 	public int getAbilityPoints() {
 		return abilityPoints;
+	}
+
+	public void grantWish(Player player) {
+
 	}
 }

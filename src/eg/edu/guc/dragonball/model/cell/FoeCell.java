@@ -4,24 +4,25 @@ import eg.edu.guc.dragonball.model.battle.Battle;
 import eg.edu.guc.dragonball.model.character.fighter.NonPlayableFighter;
 import eg.edu.guc.dragonball.model.player.Player;
 
-public class FighterCell extends Cell {
-	private NonPlayableFighter fighter;
+public class FoeCell extends Cell {
+	private NonPlayableFighter foe;
 
-	public FighterCell(NonPlayableFighter fighter) {
-		this.fighter = fighter;
+	public FoeCell(NonPlayableFighter foe) {
+		this.foe = foe;
 	}
 
 	public NonPlayableFighter getFighter() {
-		return fighter;
+		return foe;
 	}
-	
+
 	@Override
-	public void handle(Player player) {
-		new Battle(player.getActiveCharacter(), fighter);
+	public void onStep(Player player) {
+		Battle battle = new Battle(player.getActiveFighter(), foe);
+		battle.start();
 	}
 
 	@Override
 	public String toString() {
-		return "F(" + getFighter() + ")";
+		return "[" + (getFighter().isStrong() ? 'b' : 'w') + "]";
 	}
 }
