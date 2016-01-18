@@ -6,18 +6,25 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
-import eg.edu.guc.dragonball.exceptions.DragonBallInvalidAttackTypeException;
+import eg.edu.guc.dragonball.exceptions.InvalidAttackTypeException;
 import eg.edu.guc.dragonball.model.attack.Attack;
 import eg.edu.guc.dragonball.model.attack.MaximumCharge;
+import eg.edu.guc.dragonball.model.attack.PhysicalAttack;
 import eg.edu.guc.dragonball.model.attack.SuperAttack;
 import eg.edu.guc.dragonball.model.attack.SuperSaiyan;
 import eg.edu.guc.dragonball.model.attack.UltimateAttack;
+import eg.edu.guc.dragonball.model.battle.Battle;
+import eg.edu.guc.dragonball.model.cell.Collectible;
+import eg.edu.guc.dragonball.model.character.fighter.Earthling;
+import eg.edu.guc.dragonball.model.character.fighter.Fighter;
 import eg.edu.guc.dragonball.model.character.fighter.NonPlayableFighter;
 import eg.edu.guc.dragonball.model.player.Player;
 import eg.edu.guc.dragonball.model.world.World;
 
-public class Game {
 	private Player player;
 	private World world;
 	private ArrayList<NonPlayableFighter> weakFoes;
@@ -27,14 +34,15 @@ public class Game {
 
 	public Game() {
 		player = new Player("Player");
-		world = new World(this);
+		world = new World();
 		weakFoes = new ArrayList<>();
 		strongFoes = new ArrayList<>();
 		attacks = new ArrayList<>();
 		dragonAttacks = new ArrayList<>();
 
 		loadData(".");
-		world.generateWorld();
+
+		world.generateMap(weakFoes, strongFoes);
 	}
 
 	public Player getPlayer() {
@@ -43,16 +51,6 @@ public class Game {
 
 	public World getWorld() {
 		return world;
-	}
-
-	public NonPlayableFighter getRandomWeakFoe() {
-		int i = (int) (Math.random() * weakFoes.size());
-		return weakFoes.get(i);
-	}
-
-	public NonPlayableFighter getRandomStrongFoe() {
-		int i = (int) (Math.random() * strongFoes.size());
-		return strongFoes.get(i);
 	}
 
 	private String[][] loadCSV(String filePath) {
@@ -101,7 +99,7 @@ public class Game {
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		} catch (DragonBallInvalidAttackTypeException e) {
+		} catch (InvalidAttackTypeException e) {
 			e.printStackTrace();
 		}
 	}
@@ -126,7 +124,7 @@ public class Game {
 	}
 
 	private void loadAttacks(ArrayList<Attack> attacks, String filePath)
-			throws ArrayIndexOutOfBoundsException, NumberFormatException, DragonBallInvalidAttackTypeException {
+			throws ArrayIndexOutOfBoundsException, NumberFormatException, InvalidAttackTypeException {
 		String[][] lines = loadCSV(filePath);
 
 		for (int i = 1; i < lines.length; i++) {
@@ -145,15 +143,12 @@ public class Game {
 			} else if (attackType.equalsIgnoreCase("SS")) {
 				attack = new SuperSaiyan();
 			} else {
-				throw new DragonBallInvalidAttackTypeException(attackType);
+				throw new InvalidAttackTypeException(attackType);
 			}
 
 			attacks.add(attack);
 		}
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game();
-		System.out.println(game.getWorld());
 	}
 }

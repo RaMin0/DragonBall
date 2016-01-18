@@ -10,6 +10,10 @@ PENDING:
 ========
 [ ] Save should save every single thing
 [ ] Add Game.load(textFile) to load game from saved file
+[R] Fix HUD when having 4 lines separated by \n. Show (...) in end of 3rd line and beginning of 4th line
+[R] Use clip.setLoopPoints(start, end) in BattleView instead of having 2 clips
+[ ] Make sure Fighter can only learn 4 SuperAttacks and 2 UltimateAttacks maximum
+[R] Use resources instead of string file paths for assets to make them loadable in JARs.
 
 COMPLETED:
 ==========

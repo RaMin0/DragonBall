@@ -1,6 +1,6 @@
 package eg.edu.guc.dragonball.model.attack;
 
-import eg.edu.guc.dragonball.exceptions.DragonBallInvalidAttackException;
+import eg.edu.guc.dragonball.exceptions.InvalidAttackException;
 import eg.edu.guc.dragonball.model.battle.BattleOpponent;
 import eg.edu.guc.dragonball.model.character.fighter.Saiyan;
 
@@ -10,13 +10,13 @@ public class SuperSaiyan extends SuperAttack {
 	}
 
 	@Override
-	public void onUse(BattleOpponent me, BattleOpponent foe) throws DragonBallInvalidAttackException {
+	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
 		if (me instanceof Saiyan) {
 			Saiyan meSaiyan = (Saiyan) me;
 			meSaiyan.setTransformed(true);
 		} else {
-			throw new DragonBallInvalidAttackException(
-					"Only Saiyans can use the Super Saiyan attack: " + me.getClass().getSimpleName());
+			throw new InvalidAttackException(
+					"Only Saiyans can use the Super Saiyan attack: " + me.getClass().getSimpleName() + ".");
 		}
 	}
 }

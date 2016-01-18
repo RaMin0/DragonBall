@@ -1,10 +1,10 @@
 # Name,Level,BlastDamage,PhysicalDamage,MaxHealthPoints,MaxKi,MaxStamina
-Strong Foe 1,1,15,10,1000,1,100
-Strong Foe 2,2,25,20,2000,2,200
-Strong Foe 3,3,35,30,3000,3,300
-Strong Foe 4,4,45,40,4000,4,400
-Strong Foe 5,5,55,50,5000,5,500
-Strong Foe 6,6,65,60,6000,6,600
-Strong Foe 7,7,75,70,7000,7,700
-Strong Foe 8,8,85,80,8000,8,800
-Strong Foe 9,9,95,90,9000,9,900
+Strong Foe 1,1,15,10,1000,1,1
+Strong Foe 2,2,25,20,2000,2,2
+Strong Foe 3,3,35,30,3000,3,3
+Strong Foe 4,4,45,40,4000,4,4
+Strong Foe 5,5,55,50,5000,5,5
+Strong Foe 6,6,65,60,6000,6,6
+Strong Foe 7,7,75,70,7000,7,7
+Strong Foe 8,8,85,80,8000,8,8
+Strong Foe 9,9,95,90,9000,9,9

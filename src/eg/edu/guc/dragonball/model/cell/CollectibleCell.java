@@ -1,7 +1,5 @@
 package eg.edu.guc.dragonball.model.cell;
 
-import eg.edu.guc.dragonball.model.player.Player;
-
 public class CollectibleCell extends Cell {
 	private Collectible collectible;
 
@@ -9,24 +7,12 @@ public class CollectibleCell extends Cell {
 		this.collectible = collectible;
 	}
 
-	public Collectible getCollectible() {
-		return collectible;
-	}
-
 	@Override
-	public void onStep(Player player) {
-		switch (getCollectible()) {
-		case SENZU_BEAN:
-			player.setSenzuBeans(player.getSenzuBeans() + 1);
-			break;
-		case DRAGON_BALL:
-			player.setDragonBalls(player.getDragonBalls() + 1);
-			break;
-		}
+	public void onStep() {
 	}
 
 	@Override
 	public String toString() {
-		return "[" + Character.toLowerCase(getCollectible().name().charAt(0)) + "]";
+		return "[" + Character.toLowerCase(collectible.name().charAt(0)) + "]";
 	}
 }

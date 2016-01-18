@@ -1,7 +1,8 @@
 package eg.edu.guc.dragonball.model.attack;
 
-import eg.edu.guc.dragonball.exceptions.DragonBallInvalidAttackException;
+import eg.edu.guc.dragonball.exceptions.InvalidAttackException;
 import eg.edu.guc.dragonball.model.battle.BattleOpponent;
+import eg.edu.guc.dragonball.model.character.fighter.Fighter;
 
 public abstract class Attack {
 	private String name;
@@ -28,5 +29,18 @@ public abstract class Attack {
 		this.damage = damage;
 	}
 
-	public abstract void onUse(BattleOpponent me, BattleOpponent foe) throws DragonBallInvalidAttackException;
+	public abstract int getAppliedDamage(BattleOpponent me, BattleOpponent foe);
+
+	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
+		Fighter foeFighter = (Fighter) foe;
+		
+		int damage = getAppliedDamage(me, foe);
+		if (foeBlocking) {
+			while (damage > 0 && foeFighter.getStamina() > 0) {
+				foeFighter.setStamina(foeFighter.getStamina() - 1);
+				damage -= damage >= 100 ? 100 : damage;
+			}
+		}
+		foeFighter.setHealthPoints(foeFighter.getHealthPoints() - damage);
+	}
 }

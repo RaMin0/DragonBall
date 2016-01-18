@@ -1,8 +1,7 @@
 package eg.edu.guc.dragonball.model.attack;
 
 import eg.edu.guc.dragonball.model.battle.BattleOpponent;
-import eg.edu.guc.dragonball.model.character.fighter.NonPlayableFighter;
-import eg.edu.guc.dragonball.model.character.fighter.PlayableFighter;
+import eg.edu.guc.dragonball.model.character.fighter.Fighter;
 
 public class PhysicalAttack extends Attack {
 	public PhysicalAttack() {
@@ -10,11 +9,7 @@ public class PhysicalAttack extends Attack {
 	}
 
 	@Override
-	public void onUse(BattleOpponent me, BattleOpponent foe) {
-		PlayableFighter meFighter = (PlayableFighter) me;
-		NonPlayableFighter foeFighter = (NonPlayableFighter) foe;
-
-		int damage = getDamage() + meFighter.getPhysicalDamage();
-		foeFighter.setHealthPoints(foeFighter.getHealthPoints() - damage);
+	public int getAppliedDamage(BattleOpponent me, BattleOpponent foe) {
+		return getDamage() + ((Fighter) me).getPhysicalDamage();
 	}
 }

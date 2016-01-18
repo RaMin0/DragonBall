@@ -1,12 +1,23 @@
 package eg.edu.guc.dragonball.model.world;
 
-import eg.edu.guc.dragonball.exceptions.DragonBallInvalidMoveException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
+import eg.edu.guc.dragonball.exceptions.DuplicateAttackException;
+import eg.edu.guc.dragonball.exceptions.InsufficientAbilityPointsException;
+import eg.edu.guc.dragonball.exceptions.InvalidMoveException;
+import eg.edu.guc.dragonball.exceptions.MaximumAttacksLearnedException;
+import eg.edu.guc.dragonball.model.attack.Attack;
 import eg.edu.guc.dragonball.model.cell.Cell;
 import eg.edu.guc.dragonball.model.cell.Collectible;
 import eg.edu.guc.dragonball.model.cell.CollectibleCell;
 import eg.edu.guc.dragonball.model.cell.EmptyCell;
 import eg.edu.guc.dragonball.model.cell.FoeCell;
-import eg.edu.guc.dragonball.model.game.Game;
+import eg.edu.guc.dragonball.model.character.fighter.Fighter;
+import eg.edu.guc.dragonball.model.character.fighter.NonPlayableFighter;
+import eg.edu.guc.dragonball.model.character.fighter.PlayableFighter;
 
 public class World {
 	public static final int MAP_SIZE = 10;
@@ -14,14 +25,16 @@ public class World {
 	public static final int NUM_SENZU_BEANS = 5;
 	public static final int NUM_DRAGON_BALLS = 1;
 
-	private Game game;
 	private Cell[][] map;
 	private int playerRow;
 	private int playerColumn;
 
-	public World(Game game) {
-		this.game = game;
+	public World() {
 		map = new Cell[MAP_SIZE][MAP_SIZE];
+	}
+
+	public Cell[][] getMap() {
+		return map;
 	}
 
 	public int getPlayerRow() {
@@ -32,23 +45,28 @@ public class World {
 		return playerColumn;
 	}
 
-	public void generateWorld() {
-		map[0][0] = new FoeCell(game.getRandomStrongFoe());
+	private NonPlayableFighter getRandomFoe(ArrayList<NonPlayableFighter> foes) {
+		int i = new Random().nextInt(foes.size());
+		return foes.get(i);
+	}
+
+	public void generateMap(ArrayList<NonPlayableFighter> weakFoes, ArrayList<NonPlayableFighter> strongFoes) {
+		map[0][0] = new FoeCell(getRandomFoe(strongFoes));
 		map[MAP_SIZE - 1][MAP_SIZE - 1] = new EmptyCell();
 
 		for (int i = NUM_WEAK_FOES; i > 0;) {
-			int row = (int) (Math.random() * MAP_SIZE);
-			int column = (int) (Math.random() * MAP_SIZE);
+			int row = new Random().nextInt(MAP_SIZE);
+			int column = new Random().nextInt(MAP_SIZE);
 
 			if (map[row][column] == null) {
-				map[row][column] = new FoeCell(game.getRandomWeakFoe());
+				map[row][column] = new FoeCell(getRandomFoe(weakFoes));
 				i--;
 			}
 		}
 
 		for (int i = NUM_SENZU_BEANS; i > 0;) {
-			int row = (int) (Math.random() * MAP_SIZE);
-			int column = (int) (Math.random() * MAP_SIZE);
+			int row = new Random().nextInt(MAP_SIZE);
+			int column = new Random().nextInt(MAP_SIZE);
 
 			if (map[row][column] == null) {
 				map[row][column] = new CollectibleCell(Collectible.SENZU_BEAN);
@@ -57,8 +75,8 @@ public class World {
 		}
 
 		for (int i = NUM_DRAGON_BALLS; i > 0;) {
-			int row = (int) (Math.random() * MAP_SIZE);
-			int column = (int) (Math.random() * MAP_SIZE);
+			int row = new Random().nextInt(MAP_SIZE);
+			int column = new Random().nextInt(MAP_SIZE);
 
 			if (map[row][column] == null) {
 				map[row][column] = new CollectibleCell(Collectible.DRAGON_BALL);

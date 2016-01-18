@@ -85,6 +85,9 @@ public class Player {
 	}
 
 	public PlayableFighter getActiveFighter() {
+		if (activeFighter == null) {
+			activeFighter = fighters.get(0);
+		}
 		return activeFighter;
 	}
 

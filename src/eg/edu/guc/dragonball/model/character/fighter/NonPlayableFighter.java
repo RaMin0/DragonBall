@@ -8,16 +8,7 @@ public class NonPlayableFighter extends Fighter implements NonPlayableCharacter 
 
 	public NonPlayableFighter(String name, int level, int blastDamage, int physicalDamage, int maxHealthPoints,
 			int maxKi, int maxStamina, boolean strong) {
-		super(name, blastDamage, physicalDamage, maxHealthPoints, maxKi, maxStamina);
-		setLevel(level);
-		this.strong = strong;
-	}
-
-	public NonPlayableFighter(String name, int level, int xp, int targetXp, int blastDamage, int physicalDamage,
-			int abilityPoints, int healthPoints, int maxHealthPoints, int ki, int maxKi, int stamina, int maxStamina,
-			boolean strong) {
-		super(name, level, xp, targetXp, blastDamage, physicalDamage, abilityPoints, healthPoints, maxHealthPoints, ki,
-				maxKi, stamina, maxStamina);
+		super(name, level, blastDamage, physicalDamage, maxHealthPoints, maxKi, maxStamina);
 		this.strong = strong;
 	}
 

@@ -1,8 +1,6 @@
 package eg.edu.guc.dragonball.model.cell;
 
-import eg.edu.guc.dragonball.model.battle.Battle;
 import eg.edu.guc.dragonball.model.character.fighter.NonPlayableFighter;
-import eg.edu.guc.dragonball.model.player.Player;
 
 public class FoeCell extends Cell {
 	private NonPlayableFighter foe;
@@ -11,18 +9,16 @@ public class FoeCell extends Cell {
 		this.foe = foe;
 	}
 
-	public NonPlayableFighter getFighter() {
-		return foe;
+	public boolean hasStrongFoe() {
+		return foe.isStrong();
 	}
 
 	@Override
-	public void onStep(Player player) {
-		Battle battle = new Battle(player.getActiveFighter(), foe);
-		battle.start();
+	public void onStep() {
 	}
 
 	@Override
 	public String toString() {
-		return "[" + (getFighter().isStrong() ? 'b' : 'w') + "]";
+		return "[" + (foe.isStrong() ? 'b' : 'w') + "]";
 	}
 }
