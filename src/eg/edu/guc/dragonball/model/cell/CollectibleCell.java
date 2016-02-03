@@ -9,6 +9,7 @@ public class CollectibleCell extends Cell {
 
 	@Override
 	public void onStep() {
+		notifyListenersOnCollectible(collectible);
 	}
 
 	@Override

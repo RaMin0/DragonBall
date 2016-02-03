@@ -2,35 +2,40 @@ package eg.edu.guc.dragonball.model.character.fighter;
 
 import java.util.ArrayList;
 
-import eg.edu.guc.dragonball.exceptions.DuplicateAttackException;
-import eg.edu.guc.dragonball.exceptions.MaximumAttacksLearnedException;
 import eg.edu.guc.dragonball.model.attack.Attack;
+import eg.edu.guc.dragonball.model.attack.PhysicalAttack;
+import eg.edu.guc.dragonball.model.attack.SuperAttack;
+import eg.edu.guc.dragonball.model.attack.UltimateAttack;
 import eg.edu.guc.dragonball.model.battle.BattleOpponent;
 import eg.edu.guc.dragonball.model.character.Character;
 
 public abstract class Fighter extends Character implements BattleOpponent {
+	public static final int MAX_SUPER_ATTACKS = 4;
+	public static final int MAX_ULTIMATE_ATTACKS = 2;
 
 	private int level;
-	private int blastDamage;
-	private int physicalDamage;
 	private int healthPoints;
 	private int maxHealthPoints;
+	private int blastDamage;
+	private int physicalDamage;
 	private int ki;
 	private int maxKi;
 	private int stamina;
 	private int maxStamina;
-	private ArrayList<Attack> attacks;
+	private ArrayList<SuperAttack> superAttacks;
+	private ArrayList<UltimateAttack> ultimateAttacks;
 
-	public Fighter(String name, int level, int blastDamage, int physicalDamage, int maxHealthPoints, int maxKi,
+	public Fighter(String name, int level, int maxHealthPoints, int blastDamage, int physicalDamage, int maxKi,
 			int maxStamina) {
 		super(name);
 		this.level = level;
+		this.maxHealthPoints = maxHealthPoints;
 		this.blastDamage = blastDamage;
 		this.physicalDamage = physicalDamage;
-		this.maxHealthPoints = maxHealthPoints;
 		this.maxKi = maxKi;
 		this.maxStamina = maxStamina;
-		this.attacks = new ArrayList<>();
+		superAttacks = new ArrayList<>();
+		ultimateAttacks = new ArrayList<>();
 	}
 
 	public int getLevel() {
@@ -39,22 +44,6 @@ public abstract class Fighter extends Character implements BattleOpponent {
 
 	public void setLevel(int level) {
 		this.level = level;
-	}
-
-	public int getBlastDamage() {
-		return blastDamage;
-	}
-
-	public void setBlastDamage(int blastDamage) {
-		this.blastDamage = blastDamage;
-	}
-
-	public int getPhysicalDamage() {
-		return physicalDamage;
-	}
-
-	public void setPhysicalDamage(int physicalDamage) {
-		this.physicalDamage = physicalDamage;
 	}
 
 	public int getHealthPoints() {
@@ -77,6 +66,22 @@ public abstract class Fighter extends Character implements BattleOpponent {
 
 	public void setMaxHealthPoints(int maxHealthPoints) {
 		this.maxHealthPoints = maxHealthPoints;
+	}
+
+	public int getBlastDamage() {
+		return blastDamage;
+	}
+
+	public void setBlastDamage(int blastDamage) {
+		this.blastDamage = blastDamage;
+	}
+
+	public int getPhysicalDamage() {
+		return physicalDamage;
+	}
+
+	public void setPhysicalDamage(int physicalDamage) {
+		this.physicalDamage = physicalDamage;
 	}
 
 	public int getKi() {
@@ -123,16 +128,33 @@ public abstract class Fighter extends Character implements BattleOpponent {
 		this.maxStamina = maxStamina;
 	}
 
-	public ArrayList<Attack> getAttacks() {
-		return attacks;
+	public ArrayList<SuperAttack> getSuperAttacks() {
+		return superAttacks;
 	}
 
-	public void setAttacks(ArrayList<Attack> attacks) {
-		this.attacks = attacks;
+	public void setSuperAttacks(ArrayList<SuperAttack> superAttacks) {
+		this.superAttacks = superAttacks;
+	}
+
+	public ArrayList<UltimateAttack> getUltimateAttacks() {
+		return ultimateAttacks;
+	}
+
+	public void setUltimateAttacks(ArrayList<UltimateAttack> ultimateAttacks) {
+		this.ultimateAttacks = ultimateAttacks;
+	}
+
+	public ArrayList<Attack> getAttacks() {
+		ArrayList<Attack> attacks = new ArrayList<>();
+		attacks.add(new PhysicalAttack());
+		attacks.addAll(superAttacks);
+		attacks.addAll(ultimateAttacks);
+		return attacks;
 	}
 
 	@Override
 	public void onTurn() {
+
 	}
 
 	@Override

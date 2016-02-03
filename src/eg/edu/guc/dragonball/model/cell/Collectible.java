@@ -11,6 +11,7 @@ public enum Collectible {
 		case DRAGON_BALL:
 			return "Dragon Ball";
 		}
+
 		return this.name().replace('_', ' ');
 	}
 }

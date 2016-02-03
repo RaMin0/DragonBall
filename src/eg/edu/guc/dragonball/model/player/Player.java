@@ -80,8 +80,6 @@ public class Player {
 
 	public void setDragonBalls(int dragonBalls) {
 		this.dragonBalls = dragonBalls;
-
-		// TODO: Dragon mode
 	}
 
 	public PlayableFighter getActiveFighter() {

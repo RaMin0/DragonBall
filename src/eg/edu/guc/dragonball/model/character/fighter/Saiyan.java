@@ -4,7 +4,7 @@ public class Saiyan extends PlayableFighter {
 	private boolean transformed;
 
 	public Saiyan(String name) {
-		super(name, 150, 100, 1000, 5, 3);
+		super(name, 1000, 150, 100, 5, 3);
 	}
 
 	public Saiyan(String name, boolean transformed) {
@@ -23,8 +23,14 @@ public class Saiyan extends PlayableFighter {
 	@Override
 	public void onTurn() {
 		setStamina(getStamina() + 1);
-		if (isTransformed()) {
-			setKi(getKi() + 1);
+
+		if (transformed) {
+			if (getKi() > 0) {
+				setKi(getKi() - 1);
+			} else {
+				setStamina(0);
+				transformed = false;
+			}
 		}
 	}
 }

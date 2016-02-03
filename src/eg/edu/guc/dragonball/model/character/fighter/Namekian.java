@@ -2,7 +2,7 @@ package eg.edu.guc.dragonball.model.character.fighter;
 
 public class Namekian extends PlayableFighter {
 	public Namekian(String name) {
-		super(name, 0, 50, 1350, 3, 5);
+		super(name, 1350, 0, 50, 3, 5);
 	}
 
 	@Override

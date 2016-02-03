@@ -11,6 +11,6 @@ public class MaximumCharge extends SuperAttack {
 	@Override
 	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) {
 		Fighter meFighter = (Fighter) me;
-		meFighter.setKi(meFighter.getKi() + 2);
+		meFighter.setKi(meFighter.getKi() + 3);
 	}
 }

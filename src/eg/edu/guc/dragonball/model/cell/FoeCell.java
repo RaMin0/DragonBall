@@ -15,6 +15,7 @@ public class FoeCell extends Cell {
 
 	@Override
 	public void onStep() {
+		notifyListenersOnFoe(foe);
 	}
 
 	@Override

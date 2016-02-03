@@ -1,21 +1,22 @@
 package eg.edu.guc.dragonball.model.world;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 import eg.edu.guc.dragonball.exceptions.DuplicateAttackException;
-import eg.edu.guc.dragonball.exceptions.InsufficientAbilityPointsException;
+import eg.edu.guc.dragonball.exceptions.InvalidAttackException;
 import eg.edu.guc.dragonball.exceptions.InvalidMoveException;
 import eg.edu.guc.dragonball.exceptions.MaximumAttacksLearnedException;
+import eg.edu.guc.dragonball.exceptions.NotEnoughAbilityPointsException;
 import eg.edu.guc.dragonball.model.attack.Attack;
 import eg.edu.guc.dragonball.model.cell.Cell;
 import eg.edu.guc.dragonball.model.cell.Collectible;
 import eg.edu.guc.dragonball.model.cell.CollectibleCell;
 import eg.edu.guc.dragonball.model.cell.EmptyCell;
 import eg.edu.guc.dragonball.model.cell.FoeCell;
-import eg.edu.guc.dragonball.model.character.fighter.Fighter;
 import eg.edu.guc.dragonball.model.character.fighter.NonPlayableFighter;
 import eg.edu.guc.dragonball.model.character.fighter.PlayableFighter;
 
@@ -28,6 +29,7 @@ public class World {
 	private Cell[][] map;
 	private int playerRow;
 	private int playerColumn;
+	private Set<Listener> listeners = new HashSet<>();
 
 	public World() {
 		map = new Cell[MAP_SIZE][MAP_SIZE];
@@ -92,22 +94,87 @@ public class World {
 			}
 		}
 
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j].addListener(new Cell.Listener() {
+					@Override
+					public void onFoe(NonPlayableFighter foe) {
+						notifyListenersOnCellFoe(foe);
+					}
+
+					@Override
+					public void onCollectible(Collectible collectible) {
+						notifyListenersOnCellCollectible(collectible);
+					}
+				});
+			}
+		}
+
 		try {
 			moveTo(MAP_SIZE - 1, MAP_SIZE - 1);
-		} catch (DragonBallInvalidMoveException e) {
+		} catch (InvalidMoveException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void moveTo(int row, int column) throws DragonBallInvalidMoveException {
+	public void moveTo(int row, int column) throws InvalidMoveException {
 		if (row >= 0 && row < MAP_SIZE
 				&& column >= 0 && column < MAP_SIZE) {
 			Cell cell = map[row][column];
-			cell.onStep(game.getPlayer());
+			cell.onStep();
+			map[row][column] = new EmptyCell();
 			playerRow = row;
 			playerColumn = column;
 		} else {
-			throw new DragonBallInvalidMoveException(row, column);
+			throw new InvalidMoveException(row, column);
+		}
+	}
+
+	public void upgradeFighter(PlayableFighter fighter, int abilityPoints, PlayableFighter.Attribute fighterAttribute)
+			throws NotEnoughAbilityPointsException {
+		if (abilityPoints <= fighter.getAbilityPoints()) {
+			switch (fighterAttribute) {
+			case HEALTH_POINTS:
+				fighter.setMaxHealthPoints(fighter.getMaxHealthPoints() + abilityPoints * 50);
+				break;
+			case BLAST_DAMAGE:
+				fighter.setBlastDamage(fighter.getBlastDamage() + abilityPoints * 50);
+				break;
+			case PHYSICAL_DAMAGE:
+				fighter.setPhysicalDamage(fighter.getPhysicalDamage() + abilityPoints * 50);
+				break;
+			case KI:
+				fighter.setMaxKi(fighter.getMaxKi() + abilityPoints);
+				break;
+			case STAMINA:
+				fighter.setMaxStamina(fighter.getMaxStamina() + abilityPoints);
+				break;
+			}
+
+			fighter.setAbilityPoints(fighter.getAbilityPoints() - abilityPoints);
+		} else {
+			throw new NotEnoughAbilityPointsException(abilityPoints, fighter.getAbilityPoints());
+		}
+	}
+
+	public void learnAttack(PlayableFighter fighter, Attack newAttack, Attack oldAttack)
+			throws InvalidAttackException, DuplicateAttackException, MaximumAttacksLearnedException {
+		fighter.learn(newAttack, oldAttack);
+	}
+
+	public void addListener(Listener listener) {
+		listeners.add(listener);
+	}
+
+	public void notifyListenersOnCellFoe(NonPlayableFighter foe) {
+		for (Listener listener : listeners) {
+			listener.onCellFoe(foe);
+		}
+	}
+
+	public void notifyListenersOnCellCollectible(Collectible collectible) {
+		for (Listener listener : listeners) {
+			listener.onCellCollectible(collectible);
 		}
 	}
 
@@ -127,5 +194,11 @@ public class World {
 		}
 
 		return toString.substring(0, toString.length() - 1);
+	}
+
+	public interface Listener extends EventListener {
+		void onCellFoe(NonPlayableFighter foe);
+
+		void onCellCollectible(Collectible collectible);
 	}
 }

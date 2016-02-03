@@ -11,8 +11,6 @@ PENDING:
 [ ] Save should save every single thing
 [ ] Add Game.load(textFile) to load game from saved file
 [R] Fix HUD when having 4 lines separated by \n. Show (...) in end of 3rd line and beginning of 4th line
-[R] Use clip.setLoopPoints(start, end) in BattleView instead of having 2 clips
-[ ] Make sure Fighter can only learn 4 SuperAttacks and 2 UltimateAttacks maximum
 [R] Use resources instead of string file paths for assets to make them loadable in JARs.
 
 COMPLETED:
@@ -23,3 +21,11 @@ COMPLETED:
 [R] Extra constructor for loading every attribute in Character (when loading saved games)
 [R] New Attacks hierarchy
 [R] Enhance map generation to ensure all conditions are satisfied
+[R] Animate HP when changing in Battle
+[R] Use clip.setLoopPoints(start, end) in BattleView instead of having 2 clips
+[R] Make sure Fighter can only learn 4 SuperAttacks and 2 UltimateAttacks maximum
+[R] Use block cursor in HUD when taking input
+[R] Limit HUD input to alphanumeric and spaces only
+[R] Handle which foe range file to load according to player level (4 ranges, each 10 levels: 1-10, 11-20, ...)
+[R] Random dragon each granting random super and ultimate attack from list of attacks it has
+[R] HP, Blast Damage, Physical Damage => add 50 points per 1 AP. Ki, Stamina => add 1 Bar per AP
