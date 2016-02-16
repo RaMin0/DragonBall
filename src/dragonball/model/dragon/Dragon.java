@@ -8,29 +8,22 @@ import dragonball.model.attack.UltimateAttack;
 
 public class Dragon {
 	private String name;
-	private int senzuBeans;
-	private int abilityPoints;
 	private ArrayList<SuperAttack> superAttacks;
 	private ArrayList<UltimateAttack> ultimateAttacks;
+	private int senzuBeans;
+	private int abilityPoints;
 
-	public Dragon(String name, int senzuBeans, int abilityPoints) {
+	public Dragon(String name, ArrayList<SuperAttack> superAttacks, ArrayList<UltimateAttack> ultimateAttacks,
+			int senzuBeans, int abilityPoints) {
 		this.name = name;
+		this.superAttacks = superAttacks;
+		this.ultimateAttacks = ultimateAttacks;
 		this.senzuBeans = senzuBeans;
 		this.abilityPoints = abilityPoints;
-		this.superAttacks = new ArrayList<>();
-		this.ultimateAttacks = new ArrayList<>();
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public int getSenzuBeans() {
-		return senzuBeans;
-	}
-
-	public int getAbilityPoints() {
-		return abilityPoints;
 	}
 
 	public ArrayList<SuperAttack> getSuperAttacks() {
@@ -39,6 +32,14 @@ public class Dragon {
 
 	public ArrayList<UltimateAttack> getUltimateAttacks() {
 		return ultimateAttacks;
+	}
+
+	public int getSenzuBeans() {
+		return senzuBeans;
+	}
+
+	public int getAbilityPoints() {
+		return abilityPoints;
 	}
 
 	// get random wishes this dragon can grant

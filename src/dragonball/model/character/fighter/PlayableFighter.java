@@ -23,6 +23,12 @@ public abstract class PlayableFighter extends Fighter implements PlayableCharact
 				new ArrayList<UltimateAttack>());
 	}
 
+	public PlayableFighter(String name, int maxHealthPoints, int blastDamage, int physicalDamage, int maxKi,
+			int maxStamina, ArrayList<SuperAttack> superAttacks, ArrayList<UltimateAttack> ultimateAttacks) {
+		this(name, INITIAL_LEVEL, INITIAL_XP, INITIAL_TARGET_XP, maxHealthPoints, blastDamage, physicalDamage,
+				INITIAL_ABILITY_POINTS, maxKi, maxStamina, superAttacks, ultimateAttacks);
+	}
+
 	public PlayableFighter(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage,
 			int physicalDamage, int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
 			ArrayList<UltimateAttack> ultimateAttacks) {

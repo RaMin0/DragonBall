@@ -6,9 +6,14 @@ import dragonball.model.battle.BattleOpponent;
 import dragonball.model.character.fighter.Fighter;
 import dragonball.model.character.fighter.Saiyan;
 
-public class UltimateAttack extends BlastAttack {
+public class UltimateAttack extends Attack {
 	public UltimateAttack(String name, int damage) {
 		super(name, damage);
+	}
+
+	@Override
+	public int getAppliedDamage(BattleOpponent me, BattleOpponent foe) {
+		return getDamage() + ((Fighter) me).getBlastDamage();
 	}
 
 	@Override

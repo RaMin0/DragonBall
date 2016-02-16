@@ -26,6 +26,30 @@ public class Battle {
 		this.me = me;
 		this.foe = foe;
 		this.currentOpponent = me;
+
+		// set current values appropriately
+		Fighter meFighter = (Fighter) me;
+		meFighter.setHealthPoints(meFighter.getMaxHealthPoints());
+		meFighter.setKi(0);
+		meFighter.setStamina(meFighter.getMaxStamina());
+		// reset a saiyan's transformation state in case it was transformed in a previous battle
+		if (me instanceof Saiyan) {
+			Saiyan meSaiyan = (Saiyan) me;
+			meSaiyan.setTransformed(false);
+		}
+
+		Fighter foeFighter = (Fighter) foe;
+		foeFighter.setHealthPoints(foeFighter.getMaxHealthPoints());
+		foeFighter.setKi(0);
+		foeFighter.setStamina(foeFighter.getMaxStamina());
+	}
+
+	public BattleOpponent getMe() {
+		return me;
+	}
+
+	public BattleOpponent getFoe() {
+		return foe;
 	}
 
 	public BattleOpponent getCurrentOpponent() {
@@ -68,22 +92,6 @@ public class Battle {
 	}
 
 	public void start() {
-		// set current values appropriately
-		Fighter meFighter = (Fighter) me;
-		meFighter.setHealthPoints(meFighter.getMaxHealthPoints());
-		meFighter.setKi(0);
-		meFighter.setStamina(meFighter.getMaxStamina());
-		// reset a saiyan's transformation state in case it was transformed in a previous battle
-		if (me instanceof Saiyan) {
-			Saiyan meSaiyan = (Saiyan) me;
-			meSaiyan.setTransformed(false);
-		}
-
-		Fighter foeFighter = (Fighter) foe;
-		foeFighter.setHealthPoints(foeFighter.getMaxHealthPoints());
-		foeFighter.setKi(0);
-		foeFighter.setStamina(foeFighter.getMaxStamina());
-
 		notifyListeners(new BattleEvent(this, BattleEventType.BATTLE_STARTED));
 		notifyListeners(new BattleEvent(this, BattleEventType.ME_TURN));
 	}

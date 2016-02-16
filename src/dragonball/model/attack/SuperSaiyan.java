@@ -14,7 +14,7 @@ public class SuperSaiyan extends UltimateAttack {
 	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
 		if (me instanceof Saiyan) {
 			Saiyan meSaiyan = (Saiyan) me;
-			
+
 			// only requires 3 ki, without consuming them (override superclass behavior)
 			if (meSaiyan.getKi() >= 3) {
 				meSaiyan.setTransformed(true);

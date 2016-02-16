@@ -18,26 +18,26 @@ public class BattleEvent extends EventObject {
 		this(battle, type);
 		this.winner = winner;
 	}
-	
+
 	// constructor for ATTACK
 	public BattleEvent(Battle battle, BattleEventType type, Attack attack) {
 		this(battle, type);
 		this.attack = attack;
 	}
-	
+
 	// constructor for USE
 	public BattleEvent(Battle battle, BattleEventType type, Collectible collectible) {
 		this(battle, type);
 		this.collectible = collectible;
 	}
-	
+
 	// constructor for others
 	public BattleEvent(Battle battle, BattleEventType type) {
 		super(battle);
 		this.type = type;
 		this.currentOpponent = battle.getCurrentOpponent();
 	}
-	
+
 	public BattleEventType getType() {
 		return type;
 	}
@@ -56,5 +56,5 @@ public class BattleEvent extends EventObject {
 
 	public Collectible getCollectible() {
 		return collectible;
-	}	
+	}
 }

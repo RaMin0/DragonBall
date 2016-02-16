@@ -7,6 +7,10 @@ public class CollectibleCell extends Cell {
 		this.collectible = collectible;
 	}
 
+	public Collectible getCollectible() {
+		return collectible;
+	}
+
 	@Override
 	public void onStep() {
 		notifyListenersOnCollectible(collectible);

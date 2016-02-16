@@ -162,6 +162,22 @@ public class Game {
 		return state;
 	}
 
+	public ArrayList<NonPlayableFighter> getWeakFoes() {
+		return weakFoes;
+	}
+
+	public ArrayList<NonPlayableFighter> getStrongFoes() {
+		return strongFoes;
+	}
+
+	public ArrayList<Attack> getAttacks() {
+		return attacks;
+	}
+
+	public ArrayList<Dragon> getDragons() {
+		return dragons;
+	}
+
 	private String[][] loadCSV(String filePath) {
 		ArrayList<String[]> lines = new ArrayList<>();
 
@@ -207,7 +223,7 @@ public class Game {
 		}
 	}
 
-	public void loadAttacks(String filePath)
+	private void loadAttacks(String filePath)
 			throws ArrayIndexOutOfBoundsException, NumberFormatException, InvalidAttackTypeException {
 		String[][] lines = loadCSV(filePath);
 
@@ -234,7 +250,7 @@ public class Game {
 		}
 	}
 
-	public void loadFoes(String filePath) throws ArrayIndexOutOfBoundsException, NumberFormatException {
+	private void loadFoes(String filePath) throws ArrayIndexOutOfBoundsException, NumberFormatException {
 		String[][] lines = loadCSV(filePath);
 
 		NonPlayableFighter foe = null;
@@ -280,7 +296,7 @@ public class Game {
 		}
 	}
 
-	public void loadDragons(String filePath) throws ArrayIndexOutOfBoundsException, NumberFormatException {
+	private void loadDragons(String filePath) throws ArrayIndexOutOfBoundsException, NumberFormatException {
 		String[][] lines = loadCSV(filePath);
 
 		Dragon dragon = null;
@@ -291,7 +307,8 @@ public class Game {
 				int senzuBeans = Integer.parseInt(lines[i][1]);
 				int dragonsBalls = Integer.parseInt(lines[i][2]);
 
-				dragon = new Dragon(name, senzuBeans, dragonsBalls);
+				dragon = new Dragon(name, new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), senzuBeans,
+						dragonsBalls);
 				dragons.add(dragon);
 				break;
 			case 1:

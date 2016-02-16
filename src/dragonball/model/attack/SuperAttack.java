@@ -6,9 +6,14 @@ import dragonball.model.battle.BattleOpponent;
 import dragonball.model.character.fighter.Fighter;
 import dragonball.model.character.fighter.Saiyan;
 
-public class SuperAttack extends BlastAttack {
+public class SuperAttack extends Attack {
 	public SuperAttack(String name, int damage) {
 		super(name, damage);
+	}
+
+	@Override
+	public int getAppliedDamage(BattleOpponent me, BattleOpponent foe) {
+		return getDamage() + ((Fighter) me).getBlastDamage();
 	}
 
 	@Override
@@ -23,7 +28,7 @@ public class SuperAttack extends BlastAttack {
 				throw new NotEnoughKiException(1, meFighter.getKi());
 			}
 		}
-		
+
 		super.onUse(me, foe, foeBlocking);
 	}
 }

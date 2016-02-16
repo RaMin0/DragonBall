@@ -38,7 +38,7 @@ public class Player {
 
 	public Player(String name) {
 		this(name, new ArrayList<PlayableFighter>(), new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), 0,
-				0, null, 1);
+				0, null, 0);
 	}
 
 	public Player(String name, ArrayList<PlayableFighter> fighters, ArrayList<SuperAttack> superAttacks,

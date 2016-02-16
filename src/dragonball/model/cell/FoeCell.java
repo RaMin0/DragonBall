@@ -9,6 +9,10 @@ public class FoeCell extends Cell {
 		this.foe = foe;
 	}
 
+	public NonPlayableFighter getFoe() {
+		return foe;
+	}
+
 	public boolean hasStrongFoe() {
 		return foe.isStrong();
 	}

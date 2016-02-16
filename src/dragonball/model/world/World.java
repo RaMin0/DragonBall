@@ -17,7 +17,8 @@ import dragonball.model.character.fighter.NonPlayableFighter;
 public class World {
 	public static final int MAP_SIZE = 10;
 	public static final int NUM_WEAK_FOES = 15;
-	public static final int NUM_SENZU_BEANS = 5;
+	public static final int NUM_MIN_SENZU_BEANS = 3;
+	public static final int NUM_MAX_SENZU_BEANS = 5;
 	public static final int NUM_DRAGON_BALLS = 1;
 
 	private Cell[][] map;
@@ -60,7 +61,8 @@ public class World {
 			}
 		}
 
-		for (int i = NUM_SENZU_BEANS; i > 0;) {
+		for (int i = NUM_MIN_SENZU_BEANS
+				+ new Random().nextInt(NUM_MAX_SENZU_BEANS - NUM_MIN_SENZU_BEANS + 1); i > 0;) {
 			int row = new Random().nextInt(MAP_SIZE);
 			int column = new Random().nextInt(MAP_SIZE);
 
@@ -105,20 +107,20 @@ public class World {
 		}
 
 		resetPlayerPosition();
-	}	
-	
+	}
+
 	public void moveUp() throws InvalidMoveException {
 		moveTo(playerRow - 1, playerColumn);
 	}
-	
+
 	public void moveDown() throws InvalidMoveException {
 		moveTo(playerRow + 1, playerColumn);
 	}
-	
+
 	public void moveLeft() throws InvalidMoveException {
 		moveTo(playerRow, playerColumn - 1);
 	}
-	
+
 	public void moveRight() throws InvalidMoveException {
 		moveTo(playerRow, playerColumn + 1);
 	}
@@ -135,7 +137,7 @@ public class World {
 			throw new InvalidMoveException(row, column);
 		}
 	}
-	
+
 	public void resetPlayerPosition() {
 		try {
 			moveTo(MAP_SIZE - 1, MAP_SIZE - 1);
