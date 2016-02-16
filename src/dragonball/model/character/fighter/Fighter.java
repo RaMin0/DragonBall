@@ -26,7 +26,7 @@ public abstract class Fighter extends Character implements BattleOpponent {
 	private ArrayList<UltimateAttack> ultimateAttacks;
 
 	public Fighter(String name, int level, int maxHealthPoints, int blastDamage, int physicalDamage, int maxKi,
-			int maxStamina) {
+			int maxStamina, ArrayList<SuperAttack> superAttacks, ArrayList<UltimateAttack> ultimateAttacks) {
 		super(name);
 		this.level = level;
 		this.maxHealthPoints = maxHealthPoints;
@@ -34,8 +34,8 @@ public abstract class Fighter extends Character implements BattleOpponent {
 		this.physicalDamage = physicalDamage;
 		this.maxKi = maxKi;
 		this.maxStamina = maxStamina;
-		superAttacks = new ArrayList<>();
-		ultimateAttacks = new ArrayList<>();
+		this.superAttacks = superAttacks;
+		this.ultimateAttacks = ultimateAttacks;
 	}
 
 	public int getLevel() {

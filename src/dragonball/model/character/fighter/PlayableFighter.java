@@ -1,5 +1,9 @@
 package dragonball.model.character.fighter;
 
+import java.util.ArrayList;
+
+import dragonball.model.attack.SuperAttack;
+import dragonball.model.attack.UltimateAttack;
 import dragonball.model.character.PlayableCharacter;
 
 public abstract class PlayableFighter extends Fighter implements PlayableCharacter {
@@ -15,12 +19,15 @@ public abstract class PlayableFighter extends Fighter implements PlayableCharact
 	public PlayableFighter(String name, int maxHealthPoints, int blastDamage, int physicalDamage, int maxKi,
 			int maxStamina) {
 		this(name, INITIAL_LEVEL, INITIAL_XP, INITIAL_TARGET_XP, maxHealthPoints, blastDamage, physicalDamage,
-				INITIAL_ABILITY_POINTS, maxKi, maxStamina);
+				INITIAL_ABILITY_POINTS, maxKi, maxStamina, new ArrayList<SuperAttack>(),
+				new ArrayList<UltimateAttack>());
 	}
 
 	public PlayableFighter(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage,
-			int physicalDamage, int abilityPoints, int maxKi, int maxStamina) {
-		super(name, level, maxHealthPoints, blastDamage, physicalDamage, maxKi, maxStamina);
+			int physicalDamage, int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
+			ArrayList<UltimateAttack> ultimateAttacks) {
+		super(name, level, maxHealthPoints, blastDamage, physicalDamage, maxKi, maxStamina, superAttacks,
+				ultimateAttacks);
 		this.xp = xp;
 		this.targetXp = targetXp;
 		this.abilityPoints = abilityPoints;

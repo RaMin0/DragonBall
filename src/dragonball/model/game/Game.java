@@ -107,7 +107,7 @@ public class Game {
 								if (foe.isStrong()) {
 									// increment explored maps by 1
 									player.setExploredMaps(player.getExploredMaps() + 1);
-									
+
 									// reload foes in case range changed
 									int foesRange = (player.getMaxFighterLevel() - 1) / 10 + 1;
 									loadFoes("." + File.separator + "Database-Foes-Range" + foesRange + ".csv");
@@ -251,7 +251,7 @@ public class Game {
 				boolean strong = Boolean.parseBoolean(lines[i][7]);
 
 				foe = new NonPlayableFighter(name, level, maxHealthPoints, blastDamage, physicalDamage,
-						maxKi, maxStamina, strong);
+						maxKi, maxStamina, strong, new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>());
 				(strong ? strongFoes : weakFoes).add(foe);
 				break;
 			case 1:
