@@ -138,25 +138,25 @@ public class World implements CellListener {
 
 	@Override
 	public void onFoeEncountered(NonPlayableFighter foe) {
-		notifyListenersOnCellFoe(foe);
+		notifyListenersOnFoeEncountered(foe);
 	}
 
 	@Override
 	public void onCollectibleFound(Collectible collectible) {
-		notifyListenersOnCellCollectible(collectible);
+		notifyListenersOnCollectibleFound(collectible);
 	}
 
 	public void addListener(WorldListener listener) {
 		listeners.add(listener);
 	}
 
-	public void notifyListenersOnCellFoe(NonPlayableFighter foe) {
+	public void notifyListenersOnFoeEncountered(NonPlayableFighter foe) {
 		for (WorldListener listener : listeners) {
 			listener.onFoeEncountered(foe);
 		}
 	}
 
-	public void notifyListenersOnCellCollectible(Collectible collectible) {
+	public void notifyListenersOnCollectibleFound(Collectible collectible) {
 		for (WorldListener listener : listeners) {
 			listener.onCollectibleFound(collectible);
 		}

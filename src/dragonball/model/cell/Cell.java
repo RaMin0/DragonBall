@@ -14,13 +14,13 @@ public abstract class Cell {
 		listeners.add(listener);
 	}
 
-	protected void notifyListenersOnFoe(NonPlayableFighter foe) {
+	protected void notifyListenersOnFoeEncountered(NonPlayableFighter foe) {
 		for (CellListener listener : listeners) {
 			listener.onFoeEncountered(foe);
 		}
 	}
 
-	protected void notifyListenersOnCollectible(Collectible collectible) {
+	protected void notifyListenersOnCollectibleFound(Collectible collectible) {
 		for (CellListener listener : listeners) {
 			listener.onCollectibleFound(collectible);
 		}
