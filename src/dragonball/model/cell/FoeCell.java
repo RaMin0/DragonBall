@@ -13,10 +13,6 @@ public class FoeCell extends Cell {
 		return foe;
 	}
 
-	public boolean hasStrongFoe() {
-		return foe.isStrong();
-	}
-
 	@Override
 	public void onStep() {
 		notifyListenersOnFoe(foe);

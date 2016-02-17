@@ -8,6 +8,7 @@ import java.util.Set;
 import dragonball.exceptions.InvalidAttackException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
 import dragonball.model.attack.Attack;
+import dragonball.model.attack.PhysicalAttack;
 import dragonball.model.cell.Collectible;
 import dragonball.model.character.fighter.Fighter;
 import dragonball.model.character.fighter.PlayableFighter;
@@ -60,6 +61,17 @@ public class Battle {
 		return currentOpponent == me ? foe : me;
 	}
 
+	public ArrayList<Attack> getCurrentOpponentAttacks() {
+		Fighter currentFighter = (Fighter) currentOpponent;
+
+		ArrayList<Attack> attacks = new ArrayList<>();
+		// make sure to include the physical attack as well
+		attacks.add(new PhysicalAttack());
+		attacks.addAll(currentFighter.getSuperAttacks());
+		attacks.addAll(currentFighter.getUltimateAttacks());
+		return attacks;
+	}
+
 	private void switchTurn() {
 		currentOpponent = getOtherOpponent();
 	}
@@ -75,11 +87,11 @@ public class Battle {
 		// if i'm dead
 		if (((Fighter) me).getHealthPoints() == 0) {
 			// tell everyone my opponent won
-			notifyListeners(new BattleEvent(this, BattleEventType.BATTLE_ENDED, foe));
-		// if my opponent is dead
+			notifyListeners(new BattleEvent(this, BattleEventType.ENDED, foe));
+			// if my opponent is dead
 		} else if (((Fighter) foe).getHealthPoints() == 0) {
 			// tell everyone i won
-			notifyListeners(new BattleEvent(this, BattleEventType.BATTLE_ENDED, me));
+			notifyListeners(new BattleEvent(this, BattleEventType.ENDED, me));
 		} else {
 			switchTurn();
 
@@ -92,14 +104,14 @@ public class Battle {
 	}
 
 	public void start() {
-		notifyListeners(new BattleEvent(this, BattleEventType.BATTLE_STARTED));
+		notifyListeners(new BattleEvent(this, BattleEventType.STARTED));
 		notifyListeners(new BattleEvent(this, BattleEventType.ME_TURN));
 	}
 
 	// used to automate turn for opponent a.k.a. ai
 	public void play() {
 		if (new Random().nextInt(100) > 15) {
-			ArrayList<Attack> attacks = ((Fighter) currentOpponent).getAttacks();
+			ArrayList<Attack> attacks = getCurrentOpponentAttacks();
 			do {
 				try {
 					Attack randomAttack = attacks.get(new Random().nextInt(attacks.size()));
@@ -166,7 +178,7 @@ public class Battle {
 
 	public void notifyListeners(BattleEvent e) {
 		for (BattleListener listener : listeners) {
-			listener.onEvent(e);
+			listener.onBattleEvent(e);
 		}
 	}
 }

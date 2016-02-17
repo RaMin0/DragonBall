@@ -13,7 +13,7 @@ public class BattleEvent extends EventObject {
 	private Attack attack;
 	private Collectible collectible;
 
-	// constructor for BATTLE_ENDED
+	// constructor for ENDED
 	public BattleEvent(Battle battle, BattleEventType type, BattleOpponent winner) {
 		this(battle, type);
 		this.winner = winner;

@@ -21,7 +21,9 @@ import dragonball.model.battle.Battle;
 import dragonball.model.battle.BattleEvent;
 import dragonball.model.battle.BattleEventType;
 import dragonball.model.battle.BattleListener;
+import dragonball.model.cell.Cell;
 import dragonball.model.cell.Collectible;
+import dragonball.model.cell.FoeCell;
 import dragonball.model.character.fighter.NonPlayableFighter;
 import dragonball.model.character.fighter.PlayableFighter;
 import dragonball.model.dragon.Dragon;
@@ -31,7 +33,7 @@ import dragonball.model.player.PlayerListener;
 import dragonball.model.world.World;
 import dragonball.model.world.WorldListener;
 
-public class Game {
+public class Game implements PlayerListener, WorldListener, BattleListener {
 	private Player player;
 	private World world;
 	private GameState state;
@@ -54,100 +56,8 @@ public class Game {
 
 		world.generateMap(weakFoes, strongFoes);
 
-		player.addListener(new PlayerListener() {
-			@Override
-			public void onDragonCalled() {
-				state = GameState.DRAGON;
-
-				Dragon dragon = dragons.get(new Random().nextInt(dragons.size()));
-
-				notifyListenersOnDragonMode(dragon);
-			}
-
-			@Override
-			public void onWishChosen(DragonWish wish) {
-				state = GameState.WORLD;
-
-				notifyListenersOnDragonWishGranted(wish);
-			}
-		});
-
-		world.addListener(new WorldListener() {
-			@Override
-			public void onFoeEncountered(final NonPlayableFighter foe) {
-				state = GameState.BATTLE;
-
-				Battle battle = new Battle(player.getActiveFighter(), foe);
-				// handle winning and losing in a battle
-				battle.addListener(new BattleListener() {
-					@Override
-					public void onEvent(BattleEvent e) {
-						if (e.getType() == BattleEventType.BATTLE_ENDED) {
-							state = GameState.WORLD;
-
-							PlayableFighter me = player.getActiveFighter();
-							// if i won
-							if (e.getWinner() == me) {
-								// gain xp
-								me.setXp(me.getXp() + foe.getLevel() * 5);
-
-								// learn opponents super and ultimate attacks
-								for (SuperAttack superAttack : foe.getSuperAttacks()) {
-									if (!player.getSuperAttacks().contains(superAttack)) {
-										player.getSuperAttacks().add(superAttack);
-									}
-								}
-								for (UltimateAttack ultimateAttack : foe.getUltimateAttacks()) {
-									if (!player.getUltimateAttacks().contains(ultimateAttack)) {
-										player.getUltimateAttacks().add(ultimateAttack);
-									}
-								}
-
-								// if opponent is boss
-								if (foe.isStrong()) {
-									// increment explored maps by 1
-									player.setExploredMaps(player.getExploredMaps() + 1);
-
-									// reload foes in case range changed
-									int foesRange = (player.getMaxFighterLevel() - 1) / 10 + 1;
-									loadFoes("." + File.separator + "Database-Foes-Range" + foesRange + ".csv");
-
-									// regenerate map
-									world.generateMap(weakFoes, strongFoes);
-								}
-							// if my opponent won
-							} else if (e.getWinner() == foe) {
-								world.resetPlayerPosition();
-							}
-						}
-					}
-				});
-
-				notifyListenersOnBattleMode(battle);
-			}
-
-			@Override
-			public void onCollectibleFound(Collectible collectible) {
-				switch (collectible) {
-				case SENZU_BEAN:
-					player.setSenzuBeans(player.getSenzuBeans() + 1);
-					notifyListenersOnCollectibleFound(collectible);
-					break;
-				case DRAGON_BALL:
-					player.setDragonBalls(player.getDragonBalls() + 1);
-					notifyListenersOnCollectibleFound(collectible);
-
-					try {
-						// try to call the dragon. it will fail if not enough dragon balls
-						// are collected
-						player.callDragon();
-					} catch (NotEnoughCollectiblesException e) {
-						e.printStackTrace();
-					}
-					break;
-				}
-			}
-		});
+		player.addListener(this);
+		world.addListener(this);
 	}
 
 	public Player getPlayer() {
@@ -337,6 +247,107 @@ public class Game {
 		}
 	}
 
+	@Override
+	public void onDragonCalled() {
+		state = GameState.DRAGON;
+
+		Dragon dragon = dragons.get(new Random().nextInt(dragons.size()));
+
+		notifyListenersOnDragonMode(dragon);
+	}
+
+	@Override
+	public void onWishChosen(DragonWish wish) {
+		state = GameState.WORLD;
+
+		notifyListenersOnDragonWishGranted(wish);
+	}
+
+	@Override
+	public void onFoeEncountered(final NonPlayableFighter foe) {
+		state = GameState.BATTLE;
+
+		Battle battle = new Battle(player.getActiveFighter(), foe);
+		// handle winning and losing in a battle
+		battle.addListener(this);
+
+		notifyListenersOnBattleMode(battle);
+	}
+
+	@Override
+	public void onCollectibleFound(Collectible collectible) {
+		switch (collectible) {
+		case SENZU_BEAN:
+			player.setSenzuBeans(player.getSenzuBeans() + 1);
+			notifyListenersOnCollectibleFound(collectible);
+			break;
+		case DRAGON_BALL:
+			player.setDragonBalls(player.getDragonBalls() + 1);
+			notifyListenersOnCollectibleFound(collectible);
+
+			try {
+				// try to call the dragon. it will fail if not enough dragon balls
+				// are collected
+				player.callDragon();
+			} catch (NotEnoughCollectiblesException e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+	}
+
+	@Override
+	public void onBattleEvent(BattleEvent e) {
+		NonPlayableFighter foe = (NonPlayableFighter) ((Battle) e.getSource()).getFoe();
+
+		if (e.getType() == BattleEventType.ENDED) {
+			PlayableFighter me = player.getActiveFighter();
+			// if i won
+			if (e.getWinner() == me) {
+				// gain xp
+				me.setXp(me.getXp() + foe.getLevel() * 5);
+
+				// learn opponents super and ultimate attacks
+				for (SuperAttack superAttack : foe.getSuperAttacks()) {
+					if (!player.getSuperAttacks().contains(superAttack)) {
+						player.getSuperAttacks().add(superAttack);
+					}
+				}
+				for (UltimateAttack ultimateAttack : foe.getUltimateAttacks()) {
+					if (!player.getUltimateAttacks().contains(ultimateAttack)) {
+						player.getUltimateAttacks().add(ultimateAttack);
+					}
+				}
+
+				// if opponent is boss
+				if (foe.isStrong()) {
+					// increment explored maps by 1
+					player.setExploredMaps(player.getExploredMaps() + 1);
+
+					// reload foes in case range changed
+					int foesRange = (player.getMaxFighterLevel() - 1) / 10 + 1;
+					loadFoes("." + File.separator + "Database-Foes-Range" + foesRange + ".csv");
+
+					// regenerate map
+					world.generateMap(weakFoes, strongFoes);
+				}
+				// if my opponent won
+			} else if (e.getWinner() == foe) {
+				// undo removing the foe from the cell
+				Cell foeCell = new FoeCell(foe);
+				foeCell.addListener(world);
+				world.getMap()[world.getPlayerRow()][world.getPlayerColumn()] = foeCell;
+
+				// reset player position to starting cell
+				world.resetPlayerPosition();
+			}
+
+			state = GameState.WORLD;
+		}
+
+		notifyListenersOnBattleEvent(e);
+	}
+
 	public void addListener(GameListener listener) {
 		listeners.add(listener);
 	}
@@ -350,6 +361,12 @@ public class Game {
 	public void notifyListenersOnBattleMode(Battle battle) {
 		for (GameListener listener : listeners) {
 			listener.onBattle(battle);
+		}
+	}
+
+	public void notifyListenersOnBattleEvent(BattleEvent e) {
+		for (GameListener listener : listeners) {
+			listener.onBattleEvent(e);
 		}
 	}
 

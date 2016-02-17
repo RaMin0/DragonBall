@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import dragonball.exceptions.DuplicateAttackException;
-import dragonball.exceptions.InvalidAttackException;
+import dragonball.exceptions.InvalidFighterAttributeException;
 import dragonball.exceptions.InvalidFighterException;
 import dragonball.exceptions.InvalidFighterTypeException;
 import dragonball.exceptions.MaximumAttacksLearnedException;
@@ -137,56 +137,59 @@ public class Player {
 		return maxLevel;
 	}
 
-	public PlayableFighter createFighter(String fighterType, String fighterName)
+	public PlayableFighter createFighter(char fighterType, String fighterName)
 			throws InvalidFighterTypeException {
-		Class<? extends PlayableFighter> fighterClass;
-
-		if (fighterType.equalsIgnoreCase("E")) {
-			fighterClass = Earthling.class;
-		} else if (fighterType.equalsIgnoreCase("S")) {
-			fighterClass = Saiyan.class;
-		} else if (fighterType.equalsIgnoreCase("N")) {
-			fighterClass = Namekian.class;
-		} else if (fighterType.equalsIgnoreCase("F")) {
-			fighterClass = Frieza.class;
-		} else if (fighterType.equalsIgnoreCase("M")) {
-			fighterClass = Majin.class;
-		} else {
+		PlayableFighter fighter = null;
+		switch (fighterType) {
+		case 'E':
+			fighter = new Earthling(fighterName);
+			break;
+		case 'S':
+			fighter = new Saiyan(fighterName);
+			break;
+		case 'N':
+			fighter = new Namekian(fighterName);
+			break;
+		case 'F':
+			fighter = new Frieza(fighterName);
+			break;
+		case 'M':
+			fighter = new Majin(fighterName);
+			break;
+		default:
 			throw new InvalidFighterTypeException(fighterType);
 		}
 
-		return createFighter(fighterClass, fighterName);
-	}
+		fighters.add(fighter);
 
-	private PlayableFighter createFighter(Class<? extends PlayableFighter> fighterClass,
-			String fighterName) {
-		PlayableFighter fighter = null;
-		try {
-			fighter = (PlayableFighter) fighterClass.getConstructors()[0].newInstance(fighterName);
-			fighters.add(fighter);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return fighter;
 	}
 
-	public void upgradeFighter(PlayableFighter fighter, String fighterAttribute)
-			throws NotEnoughAbilityPointsException, InvalidFighterException {
+	public void upgradeFighter(PlayableFighter fighter, char fighterAttribute)
+			throws NotEnoughAbilityPointsException, InvalidFighterException, InvalidFighterAttributeException {
 		if (!fighters.contains(fighter)) {
 			throw new InvalidFighterException(fighter.getName() + " is not yours");
 		}
 
 		if (fighter.getAbilityPoints() > 0) {
-			if (fighterAttribute.equals("H")) {
+			switch (fighterAttribute) {
+			case 'H':
 				fighter.setMaxHealthPoints(fighter.getMaxHealthPoints() + 50);
-			} else if (fighterAttribute.equals("B")) {
+				break;
+			case 'B':
 				fighter.setBlastDamage(fighter.getBlastDamage() + 50);
-			} else if (fighterAttribute.equals("P")) {
+				break;
+			case 'P':
 				fighter.setPhysicalDamage(fighter.getPhysicalDamage() + 50);
-			} else if (fighterAttribute.equals("K")) {
+				break;
+			case 'K':
 				fighter.setMaxKi(fighter.getMaxKi() + 1);
-			} else if (fighterAttribute.equals("S")) {
+				break;
+			case 'S':
 				fighter.setMaxStamina(fighter.getMaxStamina() + 1);
+				break;
+			default:
+				throw new InvalidFighterAttributeException(fighterAttribute);
 			}
 
 			fighter.setAbilityPoints(fighter.getAbilityPoints() - 1);
@@ -195,29 +198,26 @@ public class Player {
 		}
 	}
 
-	public void assignAttackToFighter(PlayableFighter fighter, Attack newAttack, Attack oldAttack)
-			throws InvalidAttackException, DuplicateAttackException, MaximumAttacksLearnedException {
-		if (newAttack instanceof SuperAttack) {
-			assignAttackToFighter(fighter, getSuperAttacks(), newAttack, oldAttack, PlayableFighter.MAX_SUPER_ATTACKS);
-		} else if (newAttack instanceof UltimateAttack) {
-			assignAttackToFighter(fighter, getUltimateAttacks(), newAttack, oldAttack,
-					PlayableFighter.MAX_ULTIMATE_ATTACKS);
-		} else {
-			throw new InvalidAttackException(
-					"You can only learn super and ultimate attacks: " + newAttack.getClass().getSimpleName() + ".");
-		}
+	public void assignAttack(PlayableFighter fighter, SuperAttack newAttack, SuperAttack oldAttack)
+			throws DuplicateAttackException, MaximumAttacksLearnedException {
+		assignAttack(fighter, getSuperAttacks(), newAttack, oldAttack, PlayableFighter.MAX_SUPER_ATTACKS);
+	}
+
+	public void assignAttack(PlayableFighter fighter, UltimateAttack newAttack, UltimateAttack oldAttack)
+			throws DuplicateAttackException, MaximumAttacksLearnedException {
+		assignAttack(fighter, getUltimateAttacks(), newAttack, oldAttack, PlayableFighter.MAX_ULTIMATE_ATTACKS);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> void assignAttackToFighter(PlayableFighter fighter, ArrayList<T> attacks, Attack newAttack,
+	private <T extends Attack> void assignAttack(PlayableFighter fighter, ArrayList<T> attacks, Attack newAttack,
 			Attack oldAttack, int max) throws DuplicateAttackException, MaximumAttacksLearnedException {
 		// if attack already assigned
 		if (attacks.contains(newAttack)) {
 			throw new DuplicateAttackException(newAttack);
-		// if attack list is full and new attack won't replace an assigned one
+			// if attack list is full and new attack won't replace an assigned one
 		} else if (attacks.size() == max && oldAttack == null) {
 			throw new MaximumAttacksLearnedException(max);
-		// otherwise
+			// otherwise
 		} else {
 			int index = attacks.size();
 			// if replacing an already assigned attack

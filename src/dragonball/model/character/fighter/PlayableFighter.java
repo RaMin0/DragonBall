@@ -18,8 +18,7 @@ public abstract class PlayableFighter extends Fighter implements PlayableCharact
 
 	public PlayableFighter(String name, int maxHealthPoints, int blastDamage, int physicalDamage, int maxKi,
 			int maxStamina) {
-		this(name, INITIAL_LEVEL, INITIAL_XP, INITIAL_TARGET_XP, maxHealthPoints, blastDamage, physicalDamage,
-				INITIAL_ABILITY_POINTS, maxKi, maxStamina, new ArrayList<SuperAttack>(),
+		this(name, maxHealthPoints, blastDamage, physicalDamage, maxKi, maxStamina, new ArrayList<SuperAttack>(),
 				new ArrayList<UltimateAttack>());
 	}
 
@@ -49,10 +48,10 @@ public abstract class PlayableFighter extends Fighter implements PlayableCharact
 		// when target xp is reached, keep leveling up until the gained xp no
 		// longer reaches the target. on each level up, target increases by 20
 		// and 2 ability points are gained
-		while (this.xp >= this.targetXp) {
-			this.xp -= this.targetXp;
-			this.targetXp += 20;
+		while (this.xp >= targetXp) {
 			setLevel(getLevel() + 1);
+			this.xp -= targetXp;
+			targetXp += 20;
 			abilityPoints += 2;
 		}
 	}

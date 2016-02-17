@@ -2,8 +2,6 @@ package dragonball.model.character.fighter;
 
 import java.util.ArrayList;
 
-import dragonball.model.attack.Attack;
-import dragonball.model.attack.PhysicalAttack;
 import dragonball.model.attack.SuperAttack;
 import dragonball.model.attack.UltimateAttack;
 import dragonball.model.battle.BattleOpponent;
@@ -145,16 +143,6 @@ public abstract class Fighter extends Character implements BattleOpponent {
 
 	public void setUltimateAttacks(ArrayList<UltimateAttack> ultimateAttacks) {
 		this.ultimateAttacks = ultimateAttacks;
-	}
-
-	// a shortcut to get all attacks this fighter knows
-	public ArrayList<Attack> getAttacks() {
-		ArrayList<Attack> attacks = new ArrayList<>();
-		// make sure to include the physical attack as well
-		attacks.add(new PhysicalAttack());
-		attacks.addAll(superAttacks);
-		attacks.addAll(ultimateAttacks);
-		return attacks;
 	}
 
 	@Override

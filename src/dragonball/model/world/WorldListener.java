@@ -5,6 +5,7 @@ import java.util.EventListener;
 import dragonball.model.cell.Collectible;
 import dragonball.model.character.fighter.NonPlayableFighter;
 
+// sole use is to forward events from Cells to Game
 public interface WorldListener extends EventListener {
 	void onFoeEncountered(NonPlayableFighter foe);
 

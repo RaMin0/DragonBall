@@ -14,7 +14,7 @@ import dragonball.model.cell.EmptyCell;
 import dragonball.model.cell.FoeCell;
 import dragonball.model.character.fighter.NonPlayableFighter;
 
-public class World {
+public class World implements CellListener {
 	public static final int MAP_SIZE = 10;
 	public static final int NUM_WEAK_FOES = 15;
 	public static final int NUM_MIN_SENZU_BEANS = 3;
@@ -92,17 +92,7 @@ public class World {
 
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				map[i][j].addListener(new CellListener() {
-					@Override
-					public void onFoe(NonPlayableFighter foe) {
-						notifyListenersOnCellFoe(foe);
-					}
-
-					@Override
-					public void onCollectible(Collectible collectible) {
-						notifyListenersOnCellCollectible(collectible);
-					}
-				});
+				map[i][j].addListener(this);
 			}
 		}
 
@@ -125,7 +115,7 @@ public class World {
 		moveTo(playerRow, playerColumn + 1);
 	}
 
-	public void moveTo(int row, int column) throws InvalidMoveException {
+	private void moveTo(int row, int column) throws InvalidMoveException {
 		if (row >= 0 && row < MAP_SIZE
 				&& column >= 0 && column < MAP_SIZE) {
 			Cell cell = map[row][column];
@@ -144,6 +134,16 @@ public class World {
 		} catch (InvalidMoveException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onFoeEncountered(NonPlayableFighter foe) {
+		notifyListenersOnCellFoe(foe);
+	}
+
+	@Override
+	public void onCollectibleFound(Collectible collectible) {
+		notifyListenersOnCellCollectible(collectible);
 	}
 
 	public void addListener(WorldListener listener) {

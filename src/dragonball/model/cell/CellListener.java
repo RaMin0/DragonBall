@@ -5,7 +5,7 @@ import java.util.EventListener;
 import dragonball.model.character.fighter.NonPlayableFighter;
 
 public interface CellListener extends EventListener {
-	void onFoe(NonPlayableFighter foe);
+	void onFoeEncountered(NonPlayableFighter foe);
 
-	void onCollectible(Collectible collectible);
+	void onCollectibleFound(Collectible collectible);
 }
