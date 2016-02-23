@@ -12,7 +12,7 @@ PENDING:
 [ ] Add Game.load(textFile) to load game from saved file
 [R] Fix HUD when having 4 lines separated by \n. Show (...) in end of 3rd line and beginning of 4th line
 [R] Use resources instead of string file paths for assets to make them loadable in JARs
-[R] Fast advance HUD if enter is pressed in middle of animation
+[R] Use keyboard to navigate in MenuView
 
 COMPLETED:
 ==========
@@ -32,3 +32,4 @@ COMPLETED:
 [R] HP, Blast Damage, Physical Damage => add 50 points per 1 AP. Ki, Stamina => add 1 Bar per AP
 [R] Move listeners to their own files
 [R] Add game state enum: world, battle, dragon
+[R] Fast advance HUD if enter is pressed in middle of animation

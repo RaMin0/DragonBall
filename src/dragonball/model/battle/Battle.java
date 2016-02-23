@@ -98,14 +98,13 @@ public class Battle {
 			getCurrentOpponent().onFoeTurn();
 			getOtherOpponent().onMyTurn();
 
-			notifyListeners(
-					new BattleEvent(this, currentOpponent == me ? BattleEventType.ME_TURN : BattleEventType.FOE_TURN));
+			notifyListeners(new BattleEvent(this, BattleEventType.NEW_TURN));
 		}
 	}
 
 	public void start() {
 		notifyListeners(new BattleEvent(this, BattleEventType.STARTED));
-		notifyListeners(new BattleEvent(this, BattleEventType.ME_TURN));
+		notifyListeners(new BattleEvent(this, BattleEventType.NEW_TURN));
 	}
 
 	// used to automate turn for opponent a.k.a. ai
