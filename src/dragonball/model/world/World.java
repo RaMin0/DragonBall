@@ -46,6 +46,8 @@ public class World implements CellListener {
 	}
 
 	public void generateMap(ArrayList<NonPlayableFighter> weakFoes, ArrayList<NonPlayableFighter> strongFoes) {
+		clearMap();
+
 		map[0][0] = new FoeCell(getRandomFoe(strongFoes));
 		map[MAP_SIZE - 1][MAP_SIZE - 1] = new EmptyCell();
 
@@ -97,6 +99,14 @@ public class World implements CellListener {
 		resetPlayerPosition();
 	}
 
+	private void clearMap() {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				map[i][j] = null;
+			}
+		}
+	}
+
 	public void moveUp() throws InvalidMoveException {
 		moveTo(playerRow - 1, playerColumn);
 	}
@@ -117,10 +127,10 @@ public class World implements CellListener {
 		if (row >= 0 && row < MAP_SIZE
 				&& column >= 0 && column < MAP_SIZE) {
 			Cell cell = map[row][column];
-			cell.onStep();
 			map[row][column] = new EmptyCell();
 			playerRow = row;
 			playerColumn = column;
+			cell.onStep();
 		} else {
 			throw new InvalidMoveException(row, column);
 		}
