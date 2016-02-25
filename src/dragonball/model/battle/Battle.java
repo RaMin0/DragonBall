@@ -1,9 +1,7 @@
 package dragonball.model.battle;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 import dragonball.exceptions.InvalidAttackException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
@@ -19,7 +17,7 @@ public class Battle {
 	private BattleOpponent me;
 	private BattleOpponent foe;
 	private BattleOpponent currentOpponent;
-	private Set<BattleListener> listeners = new HashSet<>();
+	private BattleListener listener;
 	private boolean meBlocking;
 	private boolean foeBlocking;
 
@@ -171,12 +169,12 @@ public class Battle {
 		endTurn();
 	}
 
-	public void addListener(BattleListener listener) {
-		listeners.add(listener);
+	public void setListener(BattleListener listener) {
+		this.listener = listener;
 	}
 
 	public void notifyListeners(BattleEvent e) {
-		for (BattleListener listener : listeners) {
+		if (listener != null) {
 			listener.onBattleEvent(e);
 		}
 	}

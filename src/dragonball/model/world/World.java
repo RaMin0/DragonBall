@@ -1,9 +1,7 @@
 package dragonball.model.world;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 import dragonball.exceptions.InvalidMoveException;
 import dragonball.model.cell.Cell;
@@ -24,7 +22,7 @@ public class World implements CellListener {
 	private Cell[][] map;
 	private int playerRow;
 	private int playerColumn;
-	private Set<WorldListener> listeners = new HashSet<>();
+	private WorldListener listener;
 
 	public World() {
 		map = new Cell[MAP_SIZE][MAP_SIZE];
@@ -92,7 +90,7 @@ public class World implements CellListener {
 
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				map[i][j].addListener(this);
+				map[i][j].setListener(this);
 			}
 		}
 
@@ -146,18 +144,18 @@ public class World implements CellListener {
 		notifyListenersOnCollectibleFound(collectible);
 	}
 
-	public void addListener(WorldListener listener) {
-		listeners.add(listener);
+	public void setListener(WorldListener listener) {
+		this.listener = listener;
 	}
 
 	public void notifyListenersOnFoeEncountered(NonPlayableFighter foe) {
-		for (WorldListener listener : listeners) {
+		if (listener != null) {
 			listener.onFoeEncountered(foe);
 		}
 	}
 
 	public void notifyListenersOnCollectibleFound(Collectible collectible) {
-		for (WorldListener listener : listeners) {
+		if (listener != null) {
 			listener.onCollectibleFound(collectible);
 		}
 	}

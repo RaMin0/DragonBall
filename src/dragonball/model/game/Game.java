@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 import dragonball.exceptions.InvalidAttackTypeException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
@@ -41,7 +39,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 	private ArrayList<NonPlayableFighter> strongFoes;
 	private ArrayList<Attack> attacks;
 	private ArrayList<Dragon> dragons;
-	private Set<GameListener> listeners = new HashSet<>();
+	private GameListener listener;
 
 	public Game() {
 		player = new Player("Player");
@@ -56,8 +54,8 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 
 		world.generateMap(weakFoes, strongFoes);
 
-		player.addListener(this);
-		world.addListener(this);
+		player.setListener(this);
+		world.setListener(this);
 	}
 
 	public Player getPlayer() {
@@ -269,7 +267,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 
 		Battle battle = new Battle(player.getActiveFighter(), foe);
 		// handle winning and losing in a battle
-		battle.addListener(this);
+		battle.setListener(this);
 
 		notifyListenersOnBattleMode(battle);
 	}
@@ -335,7 +333,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 			} else if (e.getWinner() == foe) {
 				// undo removing the foe from the cell
 				Cell foeCell = new FoeCell(foe);
-				foeCell.addListener(world);
+				foeCell.setListener(world);
 				world.getMap()[world.getPlayerRow()][world.getPlayerColumn()] = foeCell;
 
 				// reset player position to starting cell
@@ -348,36 +346,36 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		notifyListenersOnBattleEvent(e);
 	}
 
-	public void addListener(GameListener listener) {
-		listeners.add(listener);
+	public void setListener(GameListener listener) {
+		this.listener = listener;
 	}
 
 	public void notifyListenersOnCollectibleFound(Collectible collectible) {
-		for (GameListener listener : listeners) {
+		if (listener != null) {
 			listener.onCollectibleFound(collectible);
 		}
 	}
 
 	public void notifyListenersOnBattleMode(Battle battle) {
-		for (GameListener listener : listeners) {
+		if (listener != null) {
 			listener.onBattle(battle);
 		}
 	}
 
 	public void notifyListenersOnBattleEvent(BattleEvent e) {
-		for (GameListener listener : listeners) {
+		if (listener != null) {
 			listener.onBattleEvent(e);
 		}
 	}
 
 	public void notifyListenersOnDragonMode(Dragon dragon) {
-		for (GameListener listener : listeners) {
+		if (listener != null) {
 			listener.onDragonCalled(dragon);
 		}
 	}
 
 	public void notifyListenersOnDragonWishGranted(DragonWish wish) {
-		for (GameListener listener : listeners) {
+		if (listener != null) {
 			listener.onDragonWishGranted(wish);
 		}
 	}

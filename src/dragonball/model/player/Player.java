@@ -1,8 +1,6 @@
 package dragonball.model.player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import dragonball.exceptions.DuplicateAttackException;
 import dragonball.exceptions.InvalidFighterAttributeException;
@@ -34,7 +32,7 @@ public class Player {
 	private int dragonBalls;
 	private PlayableFighter activeFighter;
 	private int exploredMaps;
-	private Set<PlayerListener> listeners = new HashSet<>();
+	private PlayerListener listener;
 
 	public Player(String name) {
 		this(name, new ArrayList<PlayableFighter>(), new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), 0,
@@ -260,18 +258,18 @@ public class Player {
 		notifyListenersOnWishChosen(wish);
 	}
 
-	public void addListener(PlayerListener listener) {
-		listeners.add(listener);
+	public void setListener(PlayerListener listener) {
+		this.listener = listener;
 	}
 
 	public void notifyListenersOnDragonCalled() {
-		for (PlayerListener listener : listeners) {
+		if (listener != null) {
 			listener.onDragonCalled();
 		}
 	}
 
 	public void notifyListenersOnWishChosen(DragonWish wish) {
-		for (PlayerListener listener : listeners) {
+		if (listener != null) {
 			listener.onWishChosen(wish);
 		}
 	}

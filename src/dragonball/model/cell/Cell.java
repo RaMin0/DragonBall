@@ -1,27 +1,24 @@
 package dragonball.model.cell;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import dragonball.model.character.fighter.NonPlayableFighter;
 
 public abstract class Cell {
-	private Set<CellListener> listeners = new HashSet<>();
+	private CellListener listener;
 
 	public abstract void onStep();
 
-	public void addListener(CellListener listener) {
-		listeners.add(listener);
+	public void setListener(CellListener listener) {
+		this.listener = listener;
 	}
 
 	protected void notifyListenersOnFoeEncountered(NonPlayableFighter foe) {
-		for (CellListener listener : listeners) {
+		if (listener != null) {
 			listener.onFoeEncountered(foe);
 		}
 	}
 
 	protected void notifyListenersOnCollectibleFound(Collectible collectible) {
-		for (CellListener listener : listeners) {
+		if (listener != null) {
 			listener.onCollectibleFound(collectible);
 		}
 	}
