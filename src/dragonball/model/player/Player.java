@@ -40,8 +40,8 @@ public class Player {
 	}
 
 	public Player(String name, ArrayList<PlayableFighter> fighters, ArrayList<SuperAttack> superAttacks,
-			ArrayList<UltimateAttack> ultimateAttacks, int senzuBeans, int dragonBalls,
-			PlayableFighter activeFighter, int exploredMaps) {
+			ArrayList<UltimateAttack> ultimateAttacks, int senzuBeans, int dragonBalls, PlayableFighter activeFighter,
+			int exploredMaps) {
 		this.name = name;
 		this.fighters = fighters;
 		this.superAttacks = superAttacks;

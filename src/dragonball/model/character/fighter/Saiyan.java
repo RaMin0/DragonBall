@@ -19,11 +19,6 @@ public class Saiyan extends PlayableFighter {
 				superAttacks, ultimateAttacks);
 	}
 
-	public Saiyan(String name, boolean transformed) {
-		this(name);
-		this.transformed = transformed;
-	}
-
 	public boolean isTransformed() {
 		return transformed;
 	}

@@ -40,6 +40,7 @@ public class World implements CellListener {
 		return playerColumn;
 	}
 
+	// a helper method to get a random foe
 	private NonPlayableFighter getRandomFoe(ArrayList<NonPlayableFighter> foes) {
 		int i = new Random().nextInt(foes.size());
 		return foes.get(i);
@@ -48,24 +49,34 @@ public class World implements CellListener {
 	public void generateMap(ArrayList<NonPlayableFighter> weakFoes, ArrayList<NonPlayableFighter> strongFoes) {
 		clearMap();
 
+		// place the boss in position 0,0
 		map[0][0] = new FoeCell(getRandomFoe(strongFoes));
-		map[MAP_SIZE - 1][MAP_SIZE - 1] = new EmptyCell();
 
+		// place an empty cell in place of the player in position 9,9
+		resetPlayerPosition();
+		map[playerRow][playerColumn] = new EmptyCell();
+
+		// place weak foes
 		for (int i = NUM_WEAK_FOES; i > 0;) {
+			// generate a random row and column
 			int row = new Random().nextInt(MAP_SIZE);
 			int column = new Random().nextInt(MAP_SIZE);
 
+			// only place the foe if the cell is free
 			if (map[row][column] == null) {
 				map[row][column] = new FoeCell(getRandomFoe(weakFoes));
 				i--;
 			}
 		}
 
-		for (int i = NUM_MIN_SENZU_BEANS
-				+ new Random().nextInt(NUM_MAX_SENZU_BEANS - NUM_MIN_SENZU_BEANS + 1); i > 0;) {
+		// place senzu beans (random between 3 and 5)
+		int numSenzuBeans = NUM_MIN_SENZU_BEANS + new Random().nextInt(NUM_MAX_SENZU_BEANS - NUM_MIN_SENZU_BEANS + 1);
+		for (int i = numSenzuBeans; i > 0;) {
+			// generate a random row and column
 			int row = new Random().nextInt(MAP_SIZE);
 			int column = new Random().nextInt(MAP_SIZE);
 
+			// only place the senzu bean if the cell is free
 			if (map[row][column] == null) {
 				map[row][column] = new CollectibleCell(Collectible.SENZU_BEAN);
 				i--;
@@ -73,15 +84,18 @@ public class World implements CellListener {
 		}
 
 		for (int i = NUM_DRAGON_BALLS; i > 0;) {
+			// generate a random row and column
 			int row = new Random().nextInt(MAP_SIZE);
 			int column = new Random().nextInt(MAP_SIZE);
 
+			// only place the dragon ball if the cell is free
 			if (map[row][column] == null) {
 				map[row][column] = new CollectibleCell(Collectible.DRAGON_BALL);
 				i--;
 			}
 		}
 
+		// place empty cells in remaining free cells
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j] == null) {
@@ -95,8 +109,6 @@ public class World implements CellListener {
 				map[i][j].setListener(this);
 			}
 		}
-
-		resetPlayerPosition();
 	}
 
 	private void clearMap() {
@@ -177,7 +189,7 @@ public class World implements CellListener {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (i == playerRow && j == playerColumn) {
-					toString += "[x]";
+					toString += "[x]"; // place an [x] in place of the player
 				} else {
 					toString += map[i][j];
 				}

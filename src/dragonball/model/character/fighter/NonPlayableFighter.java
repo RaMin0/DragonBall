@@ -20,8 +20,4 @@ public class NonPlayableFighter extends Fighter implements NonPlayableCharacter 
 	public boolean isStrong() {
 		return strong;
 	}
-
-	public void setStrong(boolean strong) {
-		this.strong = strong;
-	}
 }

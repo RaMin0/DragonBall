@@ -2,13 +2,11 @@ package dragonball.model.game;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import dragonball.exceptions.InvalidAttackTypeException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
 import dragonball.model.attack.Attack;
 import dragonball.model.attack.MaximumCharge;
@@ -50,7 +48,9 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		attacks = new ArrayList<>();
 		dragons = new ArrayList<>();
 
-		loadData(".");
+		loadAttacks("Database-Attacks.csv");
+		loadFoes("Database-Foes-Range1.csv");
+		loadDragons("Database-Dragons.csv");
 
 		world.generateMap(weakFoes, strongFoes);
 
@@ -96,11 +96,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 			while ((line = reader.readLine()) != null) {
 				lines.add(line.split(","));
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} finally {
 			try {
@@ -115,28 +111,11 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		return lines.toArray(new String[][] {});
 	}
 
-	private void loadData(String dataDir) {
-		try {
-			int foesRange = (player.getMaxFighterLevel() - 1) / 10 + 1;
-
-			loadAttacks(dataDir + File.separator + "Database-Attacks.csv");
-			loadFoes(dataDir + File.separator + "Database-Foes-Range" + foesRange + ".csv");
-			loadDragons(dataDir + File.separator + "Database-Dragons.csv");
-		} catch (ArrayIndexOutOfBoundsException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (InvalidAttackTypeException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void loadAttacks(String filePath)
-			throws ArrayIndexOutOfBoundsException, NumberFormatException, InvalidAttackTypeException {
+	private void loadAttacks(String filePath) {
 		String[][] lines = loadCSV(filePath);
 
 		for (int i = 0; i < lines.length; i++) {
-			Attack attack;
+			Attack attack = null;
 
 			String attackType = lines[i][0];
 			String name = lines[i][1];
@@ -150,98 +129,92 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 				attack = new MaximumCharge();
 			} else if (attackType.equalsIgnoreCase("SS")) {
 				attack = new SuperSaiyan();
+			}
+
+			if (attack != null) {
+				attacks.add(attack);
+			}
+		}
+	}
+
+	private void loadFoes(String filePath) {
+		String[][] lines = loadCSV(filePath);
+
+		for (int i = 0; i < lines.length; i += 3) {
+			String name = lines[i][0];
+			int level = Integer.parseInt(lines[i][1]);
+			int maxHealthPoints = Integer.parseInt(lines[i][2]);
+			int blastDamage = Integer.parseInt(lines[i][3]);
+			int physicalDamage = Integer.parseInt(lines[i][4]);
+			int maxKi = Integer.parseInt(lines[i][5]);
+			int maxStamina = Integer.parseInt(lines[i][6]);
+			boolean strong = Boolean.parseBoolean(lines[i][7]);
+			ArrayList<SuperAttack> superAttacks = new ArrayList<>();
+			ArrayList<UltimateAttack> ultimateAttacks = new ArrayList<>();
+
+			for (int j = 0; j < lines[i + 1].length; j++) {
+				String attackName = lines[i + 1][j];
+				for (Attack attack : attacks) {
+					if (attack instanceof SuperAttack && attack.getName().equalsIgnoreCase(attackName)) {
+						superAttacks.add((SuperAttack) attack);
+						break;
+					}
+				}
+			}
+
+			for (int j = 0; j < lines[i + 2].length; j++) {
+				String attackName = lines[i + 2][j];
+				for (Attack attack : attacks) {
+					if (attack instanceof UltimateAttack && attack.getName().equalsIgnoreCase(attackName)) {
+						ultimateAttacks.add((UltimateAttack) attack);
+						break;
+					}
+				}
+			}
+
+			NonPlayableFighter foe = new NonPlayableFighter(name, level, maxHealthPoints, blastDamage, physicalDamage,
+					maxKi, maxStamina, strong, superAttacks, ultimateAttacks);
+			if (strong) {
+				strongFoes.add(foe);
 			} else {
-				throw new InvalidAttackTypeException(attackType);
-			}
-
-			attacks.add(attack);
-		}
-	}
-
-	private void loadFoes(String filePath) throws ArrayIndexOutOfBoundsException, NumberFormatException {
-		String[][] lines = loadCSV(filePath);
-
-		NonPlayableFighter foe = null;
-		for (int i = 0; i < lines.length; i++) {
-			switch (i % 3) {
-			case 0:
-				String name = lines[i][0];
-				int level = Integer.parseInt(lines[i][1]);
-				int maxHealthPoints = Integer.parseInt(lines[i][2]);
-				int blastDamage = Integer.parseInt(lines[i][3]);
-				int physicalDamage = Integer.parseInt(lines[i][4]);
-				int maxKi = Integer.parseInt(lines[i][5]);
-				int maxStamina = Integer.parseInt(lines[i][6]);
-				boolean strong = Boolean.parseBoolean(lines[i][7]);
-
-				foe = new NonPlayableFighter(name, level, maxHealthPoints, blastDamage, physicalDamage,
-						maxKi, maxStamina, strong, new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>());
-				(strong ? strongFoes : weakFoes).add(foe);
-				break;
-			case 1:
-				for (int j = 0; j < lines[i].length; j++) {
-					String attackName = lines[i][j];
-					for (Attack attack : attacks) {
-						if (attack instanceof SuperAttack && attack.getName().equalsIgnoreCase(attackName)) {
-							foe.getSuperAttacks().add((SuperAttack) attack);
-							break;
-						}
-					}
-				}
-				break;
-			case 2:
-				for (int j = 0; j < lines[i].length; j++) {
-					String attackName = lines[i][j];
-					for (Attack attack : attacks) {
-						if (attack instanceof UltimateAttack && attack.getName().equalsIgnoreCase(attackName)) {
-							foe.getUltimateAttacks().add((UltimateAttack) attack);
-							break;
-						}
-					}
-				}
-				break;
+				weakFoes.add(foe);
 			}
 		}
 	}
 
-	private void loadDragons(String filePath) throws ArrayIndexOutOfBoundsException, NumberFormatException {
+	private void loadDragons(String filePath) {
 		String[][] lines = loadCSV(filePath);
 
-		Dragon dragon = null;
-		for (int i = 0; i < lines.length; i++) {
-			switch (i % 3) {
-			case 0:
-				String name = lines[i][0];
-				int senzuBeans = Integer.parseInt(lines[i][1]);
-				int dragonsBalls = Integer.parseInt(lines[i][2]);
+		for (int i = 0; i < lines.length; i += 3) {
+			String name = lines[i][0];
+			int senzuBeans = Integer.parseInt(lines[i][1]);
+			int dragonsBalls = Integer.parseInt(lines[i][2]);
+			ArrayList<SuperAttack> superAttacks = new ArrayList<>();
+			ArrayList<UltimateAttack> ultimateAttacks = new ArrayList<>();
 
-				dragon = new Dragon(name, new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), senzuBeans,
-						dragonsBalls);
-				dragons.add(dragon);
-				break;
-			case 1:
-				for (int j = 0; j < lines[i].length; j++) {
-					String attackName = lines[i][j];
-					for (Attack attack : attacks) {
-						if (attack instanceof SuperAttack && attack.getName().equalsIgnoreCase(attackName)) {
-							dragon.getSuperAttacks().add((SuperAttack) attack);
-							break;
-						}
+			for (int j = 0; j < lines[i + 1].length; j++) {
+				String attackName = lines[i + 1][j];
+				for (Attack attack : attacks) {
+					if (attack instanceof SuperAttack && attack.getName().equalsIgnoreCase(attackName)) {
+						superAttacks.add((SuperAttack) attack);
+						break;
 					}
 				}
-				break;
-			case 2:
-				for (int j = 0; j < lines[i].length; j++) {
-					String attackName = lines[i][j];
-					for (Attack attack : attacks) {
-						if (attack instanceof UltimateAttack && attack.getName().equalsIgnoreCase(attackName)) {
-							dragon.getUltimateAttacks().add((UltimateAttack) attack);
-							break;
-						}
-					}
-				}
-				break;
 			}
+
+			for (int j = 0; j < lines[i + 2].length; j++) {
+				String attackName = lines[i + 2][j];
+				for (Attack attack : attacks) {
+					if (attack instanceof UltimateAttack && attack.getName().equalsIgnoreCase(attackName)) {
+						ultimateAttacks.add((UltimateAttack) attack);
+						break;
+					}
+				}
+			}
+
+			Dragon dragon = new Dragon(name, superAttacks, ultimateAttacks, senzuBeans,
+					dragonsBalls);
+			dragons.add(dragon);
 		}
 	}
 

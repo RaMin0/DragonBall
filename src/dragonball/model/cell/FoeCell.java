@@ -20,6 +20,10 @@ public class FoeCell extends Cell {
 
 	@Override
 	public String toString() {
-		return "[" + (foe.isStrong() ? 'b' : 'w') + "]";
+		if (foe.isStrong()) {
+			return "[b]";
+		} else {
+			return "[w]";
+		}
 	}
 }
