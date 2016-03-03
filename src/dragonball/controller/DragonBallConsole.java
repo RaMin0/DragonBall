@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dragonball.exceptions.InvalidAttackException;
+import dragonball.exceptions.InvalidFighterAttributeException;
 import dragonball.exceptions.InvalidFighterException;
 import dragonball.exceptions.InvalidFighterTypeException;
 import dragonball.exceptions.InvalidMoveException;
+import dragonball.exceptions.NotEnoughAbilityPointsException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
 import dragonball.model.attack.Attack;
 import dragonball.model.attack.PhysicalAttack;
@@ -98,7 +100,7 @@ public class DragonBallConsole implements GameListener {
 		System.out.println("What do you want to do?");
 		System.out.println("1. Create Fighter");
 		System.out.println("2. Active Fighter");
-//		System.out.println("3. Upgrade Fighter");
+		System.out.println("3. Upgrade Fighter");
 //		System.out.println("4. Assign Attack");
 //		System.out.println("5. Load/Save");
 		System.out.println("6. Exit");
@@ -109,6 +111,9 @@ public class DragonBallConsole implements GameListener {
 			break;
 		case 2:
 			menuWorldActiveFighter();
+			break;
+		case 3:
+			menuWorldUpgradeFighter();
 			break;
 		case 6:
 			System.out.println("Good-bye, " + game.getPlayer().getName() + "!");
@@ -150,6 +155,48 @@ public class DragonBallConsole implements GameListener {
 		}
 
 		printMap();
+	}
+
+	private void menuWorldUpgradeFighter() {
+		System.out.println("Choose an attribute:");
+		String[] fighterAttributes = new String[] { "Health Points", "Blast Damage", "Physical Damage", "Ki",
+				"Stamina" };
+		for (int i = 0; i < fighterAttributes.length; i++) {
+			System.out.println((i + 1) + ". " + fighterAttributes[i]);
+		}
+		System.out.print("> ");
+		String fighterAttribute = fighterAttributes[in.nextInt() - 1];
+
+		try {
+			PlayableFighter fighter = game.getPlayer().getActiveFighter();
+			game.getPlayer().upgradeFighter(fighter, fighterAttribute.charAt(0));
+
+			int attributeValue = -1;
+			switch (fighterAttribute.charAt(0)) {
+			case 'H':
+				attributeValue = fighter.getMaxHealthPoints();
+				break;
+			case 'B':
+				attributeValue = fighter.getBlastDamage();
+				break;
+			case 'P':
+				attributeValue = fighter.getPhysicalDamage();
+				break;
+			case 'K':
+				attributeValue = fighter.getMaxKi();
+				break;
+			case 'S':
+				attributeValue = fighter.getMaxStamina();
+				break;
+			}
+
+			String isOrAre = fighterAttribute.charAt(fighterAttribute.length() - 1) == 's' ? "are" : "is";
+			System.out.println(fighter.getName() + "'s " + fighterAttribute.toLowerCase() + " " + isOrAre + " now "
+					+ attributeValue + ".");
+		} catch (NotEnoughAbilityPointsException | InvalidFighterException
+				| InvalidFighterAttributeException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	private void menuBattle(Battle battle) {
