@@ -53,7 +53,7 @@ public class World implements CellListener {
 		map[0][0] = new FoeCell(getRandomFoe(strongFoes));
 
 		// place an empty cell in place of the player in position 9,9
-		resetPlayerPosition();
+		playerRow = playerColumn = MAP_SIZE - 1;
 		map[playerRow][playerColumn] = new EmptyCell();
 
 		// place weak foes

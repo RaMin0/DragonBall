@@ -166,7 +166,7 @@ public class Player {
 	public void upgradeFighter(PlayableFighter fighter, char fighterAttribute)
 			throws NotEnoughAbilityPointsException, InvalidFighterException, InvalidFighterAttributeException {
 		if (!fighters.contains(fighter)) {
-			throw new InvalidFighterException(fighter.getName() + " is not yours");
+			throw new InvalidFighterException(fighter.getName() + " is not yours.");
 		}
 
 		if (fighter.getAbilityPoints() > 0) {

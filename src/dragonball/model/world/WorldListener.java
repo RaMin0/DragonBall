@@ -1,13 +1,8 @@
 package dragonball.model.world;
 
-import java.util.EventListener;
-
-import dragonball.model.cell.Collectible;
-import dragonball.model.character.fighter.NonPlayableFighter;
+import dragonball.model.cell.CellListener;
 
 // sole use is to forward events from Cells to Game
-public interface WorldListener extends EventListener {
-	void onFoeEncountered(NonPlayableFighter foe);
+public interface WorldListener extends CellListener {
 
-	void onCollectibleFound(Collectible collectible);
 }
