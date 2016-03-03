@@ -11,13 +11,13 @@ public abstract class Cell {
 		this.listener = listener;
 	}
 
-	protected void notifyListenersOnFoeEncountered(NonPlayableFighter foe) {
+	protected void notifyOnFoeEncountered(NonPlayableFighter foe) {
 		if (listener != null) {
 			listener.onFoeEncountered(foe);
 		}
 	}
 
-	protected void notifyListenersOnCollectibleFound(Collectible collectible) {
+	protected void notifyOnCollectibleFound(Collectible collectible) {
 		if (listener != null) {
 			listener.onCollectibleFound(collectible);
 		}

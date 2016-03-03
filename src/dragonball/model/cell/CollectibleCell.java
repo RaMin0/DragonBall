@@ -13,7 +13,7 @@ public class CollectibleCell extends Cell {
 
 	@Override
 	public void onStep() {
-		notifyListenersOnCollectibleFound(collectible);
+		notifyOnCollectibleFound(collectible);
 	}
 
 	@Override

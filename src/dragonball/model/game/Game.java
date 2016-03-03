@@ -224,14 +224,14 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 
 		Dragon dragon = dragons.get(new Random().nextInt(dragons.size()));
 
-		notifyListenersOnDragonMode(dragon);
+		notifyOnDragonCalled(dragon);
 	}
 
 	@Override
 	public void onWishChosen(DragonWish wish) {
 		state = GameState.WORLD;
 
-		notifyListenersOnDragonWishGranted(wish);
+		notifyOnDragonWishGranted(wish);
 	}
 
 	@Override
@@ -242,7 +242,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		// handle winning and losing in a battle
 		battle.setListener(this);
 
-		notifyListenersOnBattleMode(battle);
+		notifyOnBattle(battle);
 	}
 
 	@Override
@@ -250,11 +250,11 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		switch (collectible) {
 		case SENZU_BEAN:
 			player.setSenzuBeans(player.getSenzuBeans() + 1);
-			notifyListenersOnCollectibleFound(collectible);
+			notifyOnCollectibleFound(collectible);
 			break;
 		case DRAGON_BALL:
 			player.setDragonBalls(player.getDragonBalls() + 1);
-			notifyListenersOnCollectibleFound(collectible);
+			notifyOnCollectibleFound(collectible);
 
 			try {
 				// try to call the dragon. it will fail if not enough dragon balls
@@ -316,38 +316,38 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 			state = GameState.WORLD;
 		}
 
-		notifyListenersOnBattleEvent(e);
+		notifyOnBattleEvent(e);
 	}
 
 	public void setListener(GameListener listener) {
 		this.listener = listener;
 	}
 
-	public void notifyListenersOnCollectibleFound(Collectible collectible) {
+	public void notifyOnCollectibleFound(Collectible collectible) {
 		if (listener != null) {
 			listener.onCollectibleFound(collectible);
 		}
 	}
 
-	public void notifyListenersOnBattleMode(Battle battle) {
+	public void notifyOnBattle(Battle battle) {
 		if (listener != null) {
 			listener.onBattle(battle);
 		}
 	}
 
-	public void notifyListenersOnBattleEvent(BattleEvent e) {
+	public void notifyOnBattleEvent(BattleEvent e) {
 		if (listener != null) {
 			listener.onBattleEvent(e);
 		}
 	}
 
-	public void notifyListenersOnDragonMode(Dragon dragon) {
+	public void notifyOnDragonCalled(Dragon dragon) {
 		if (listener != null) {
 			listener.onDragonCalled(dragon);
 		}
 	}
 
-	public void notifyListenersOnDragonWishGranted(DragonWish wish) {
+	public void notifyOnDragonWishGranted(DragonWish wish) {
 		if (listener != null) {
 			listener.onDragonWishGranted(wish);
 		}

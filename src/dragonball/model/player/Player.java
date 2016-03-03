@@ -231,7 +231,7 @@ public class Player {
 		if (dragonBalls >= NUM_DRAGON_BALLS) {
 			dragonBalls -= NUM_DRAGON_BALLS;
 
-			notifyListenersOnDragonCalled();
+			notifyOnDragonCalled();
 		} else {
 			throw new NotEnoughCollectiblesException(Collectible.DRAGON_BALL);
 		}
@@ -255,20 +255,20 @@ public class Player {
 			break;
 		}
 
-		notifyListenersOnWishChosen(wish);
+		notifyOnWishChosen(wish);
 	}
 
 	public void setListener(PlayerListener listener) {
 		this.listener = listener;
 	}
 
-	public void notifyListenersOnDragonCalled() {
+	public void notifyOnDragonCalled() {
 		if (listener != null) {
 			listener.onDragonCalled();
 		}
 	}
 
-	public void notifyListenersOnWishChosen(DragonWish wish) {
+	public void notifyOnWishChosen(DragonWish wish) {
 		if (listener != null) {
 			listener.onWishChosen(wish);
 		}

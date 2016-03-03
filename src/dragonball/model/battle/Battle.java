@@ -85,24 +85,24 @@ public class Battle {
 		// if i'm dead
 		if (((Fighter) me).getHealthPoints() == 0) {
 			// tell everyone my opponent won
-			notifyListeners(new BattleEvent(this, BattleEventType.ENDED, foe));
+			notifyOnBattleEvent(new BattleEvent(this, BattleEventType.ENDED, foe));
 			// if my opponent is dead
 		} else if (((Fighter) foe).getHealthPoints() == 0) {
 			// tell everyone i won
-			notifyListeners(new BattleEvent(this, BattleEventType.ENDED, me));
+			notifyOnBattleEvent(new BattleEvent(this, BattleEventType.ENDED, me));
 		} else {
 			switchTurn();
 
 			getCurrentOpponent().onFoeTurn();
 			getOtherOpponent().onMyTurn();
 
-			notifyListeners(new BattleEvent(this, BattleEventType.NEW_TURN));
+			notifyOnBattleEvent(new BattleEvent(this, BattleEventType.NEW_TURN));
 		}
 	}
 
 	public void start() {
-		notifyListeners(new BattleEvent(this, BattleEventType.STARTED));
-		notifyListeners(new BattleEvent(this, BattleEventType.NEW_TURN));
+		notifyOnBattleEvent(new BattleEvent(this, BattleEventType.STARTED));
+		notifyOnBattleEvent(new BattleEvent(this, BattleEventType.NEW_TURN));
 	}
 
 	// used to automate turn for opponent a.k.a. ai
@@ -128,7 +128,7 @@ public class Battle {
 		attack.onUse(currentOpponent, getOtherOpponent(),
 				(currentOpponent == me && foeBlocking) || (currentOpponent == foe && meBlocking));
 
-		notifyListeners(new BattleEvent(this, BattleEventType.ATTACK, attack));
+		notifyOnBattleEvent(new BattleEvent(this, BattleEventType.ATTACK, attack));
 
 		endTurn();
 	}
@@ -141,7 +141,7 @@ public class Battle {
 			foeBlocking = true;
 		}
 
-		notifyListeners(new BattleEvent(this, BattleEventType.BLOCK));
+		notifyOnBattleEvent(new BattleEvent(this, BattleEventType.BLOCK));
 
 		endTurn();
 	}
@@ -157,7 +157,7 @@ public class Battle {
 
 				player.setSenzuBeans(player.getSenzuBeans() - 1);
 
-				notifyListeners(new BattleEvent(this, BattleEventType.USE, collectible));
+				notifyOnBattleEvent(new BattleEvent(this, BattleEventType.USE, collectible));
 			} else {
 				throw new NotEnoughCollectiblesException(Collectible.SENZU_BEAN);
 			}
@@ -173,7 +173,7 @@ public class Battle {
 		this.listener = listener;
 	}
 
-	public void notifyListeners(BattleEvent e) {
+	public void notifyOnBattleEvent(BattleEvent e) {
 		if (listener != null) {
 			listener.onBattleEvent(e);
 		}
