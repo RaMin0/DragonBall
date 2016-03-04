@@ -3,11 +3,13 @@ package dragonball.controller;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import dragonball.exceptions.DuplicateAttackException;
 import dragonball.exceptions.InvalidAttackException;
 import dragonball.exceptions.InvalidFighterAttributeException;
 import dragonball.exceptions.InvalidFighterException;
 import dragonball.exceptions.InvalidFighterTypeException;
 import dragonball.exceptions.InvalidMoveException;
+import dragonball.exceptions.MaximumAttacksLearnedException;
 import dragonball.exceptions.NotEnoughAbilityPointsException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
 import dragonball.model.attack.Attack;
@@ -17,6 +19,7 @@ import dragonball.model.attack.UltimateAttack;
 import dragonball.model.battle.Battle;
 import dragonball.model.battle.BattleEvent;
 import dragonball.model.cell.Collectible;
+import dragonball.model.character.fighter.Fighter;
 import dragonball.model.character.fighter.NonPlayableFighter;
 import dragonball.model.character.fighter.PlayableFighter;
 import dragonball.model.dragon.Dragon;
@@ -101,7 +104,7 @@ public class DragonBallConsole implements GameListener {
 		System.out.println("1. Create Fighter");
 		System.out.println("2. Active Fighter");
 		System.out.println("3. Upgrade Fighter");
-//		System.out.println("4. Assign Attack");
+		System.out.println("4. Assign Attack");
 //		System.out.println("5. Load/Save");
 		System.out.println("6. Exit");
 		System.out.print("> ");
@@ -114,6 +117,9 @@ public class DragonBallConsole implements GameListener {
 			break;
 		case 3:
 			menuWorldUpgradeFighter();
+			break;
+		case 4:
+			menuWorldAssignAttack();
 			break;
 		case 6:
 			System.out.println("Good-bye, " + game.getPlayer().getName() + "!");
@@ -133,7 +139,7 @@ public class DragonBallConsole implements GameListener {
 			PlayableFighter fighter = game.getPlayer().createFighter(fighterType.charAt(0), in.next());
 			System.out.println(fighter.getName() + " is here!");
 		} catch (InvalidFighterTypeException e) {
-			System.err.println(e.getMessage() + ".");
+			System.err.println(e.getMessage());
 		}
 
 		printMap();
@@ -199,6 +205,60 @@ public class DragonBallConsole implements GameListener {
 		}
 	}
 
+	private void menuWorldAssignAttack() {
+		PlayableFighter fighter = game.getPlayer().getActiveFighter();
+
+		System.out.println("Choose an slot:");
+		System.out.println("- Super Attacks");
+		for (int i = 0; i < Fighter.MAX_SUPER_ATTACKS; i++) {
+			SuperAttack attack = fighter.getSuperAttacks().size() > i ? fighter.getSuperAttacks().get(i) : null;
+			System.out.println("  " + (i + 1) + "." + (attack == null ? "(EMPTY)" : attack.getName()));
+		}
+		System.out.println("- Ultimate Attacks");
+		for (int i = 0; i < Fighter.MAX_ULTIMATE_ATTACKS; i++) {
+			UltimateAttack attack = fighter.getUltimateAttacks().size() > i ? fighter.getUltimateAttacks().get(i)
+					: null;
+			System.out.println("  " + (i + 5) + ". " + (attack == null ? "(EMPTY)" : attack.getName()));
+		}
+		System.out.print("> ");
+		int slot = in.nextInt();
+
+		System.out.println("Choose an attack:");
+		if (slot <= 4) {
+			ArrayList<SuperAttack> superAttacks = game.getPlayer().getSuperAttacks();
+			for (int i = 0; i < superAttacks.size(); i++) {
+				SuperAttack attack = superAttacks.get(i);
+				System.out.println((i + 1) + ". " + attack.getName());
+			}
+			System.out.print("> ");
+			SuperAttack fighterAttack = slot <= fighter.getSuperAttacks().size()
+					? fighter.getSuperAttacks().get(slot - 1) : null;
+			SuperAttack playerAttack = game.getPlayer().getSuperAttacks().get(in.nextInt() - 1);
+			try {
+				game.getPlayer().assignAttack(fighter, playerAttack, fighterAttack);
+				System.out.println(fighter.getName() + " has learned the " + playerAttack.getName() + " attack.");
+			} catch (DuplicateAttackException | MaximumAttacksLearnedException e) {
+				System.err.println(e.getMessage());
+			}
+		} else {
+			ArrayList<UltimateAttack> ultimateAttacks = game.getPlayer().getUltimateAttacks();
+			for (int i = 0; i < ultimateAttacks.size(); i++) {
+				UltimateAttack attack = ultimateAttacks.get(i);
+				System.out.println((i + 1) + ". " + attack.getName());
+			}
+			System.out.print("> ");
+			UltimateAttack fighterAttack = slot <= fighter.getUltimateAttacks().size()
+					? fighter.getUltimateAttacks().get(slot - 1) : null;
+			UltimateAttack playerAttack = game.getPlayer().getUltimateAttacks().get(in.nextInt() - 1);
+			try {
+				game.getPlayer().assignAttack(fighter, playerAttack, fighterAttack);
+				System.out.println(fighter.getName() + " has learned the " + playerAttack.getName() + " attack.");
+			} catch (DuplicateAttackException | MaximumAttacksLearnedException e) {
+				System.err.println(e.getMessage());
+			}
+		}
+	}
+
 	private void menuBattle(Battle battle) {
 		System.out.println("What do you want to do?");
 		System.out.println("1. Attack");
@@ -239,7 +299,7 @@ public class DragonBallConsole implements GameListener {
 				System.out.println("- Ultimate Attacks");
 			}
 			System.out.println(
-					(attack instanceof PhysicalAttack ? (i + 1) + ". " : "  " + (i + 1) + ".") + attack.getName());
+					(attack instanceof PhysicalAttack ? (i + 1) + ". " : "  " + (i + 1) + ". ") + attack.getName());
 		}
 		System.out.print("> ");
 		Attack attack = currentOpponentAttacks.get(in.nextInt() - 1);
@@ -247,7 +307,7 @@ public class DragonBallConsole implements GameListener {
 			battle.attack(attack);
 			return true;
 		} catch (InvalidAttackException e) {
-			System.err.println(e.getMessage() + ".");
+			System.err.println(e.getMessage());
 			return false;
 		}
 	}
