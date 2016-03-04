@@ -1,7 +1,7 @@
 package dragonball.model.battle;
 
 public interface BattleOpponent {
-	void onMyTurn();
+	void onAttackerTurn();
 
-	void onFoeTurn();
+	void onDefenderTurn();
 }

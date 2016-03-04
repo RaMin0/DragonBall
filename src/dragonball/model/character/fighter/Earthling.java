@@ -18,8 +18,8 @@ public class Earthling extends PlayableFighter {
 	}
 
 	@Override
-	public void onMyTurn() {
-		super.onMyTurn();
+	public void onAttackerTurn() {
+		super.onAttackerTurn();
 		setKi(getKi() + 1);
 	}
 }

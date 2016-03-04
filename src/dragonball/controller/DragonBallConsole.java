@@ -7,7 +7,7 @@ import dragonball.exceptions.DuplicateAttackException;
 import dragonball.exceptions.InvalidAttackException;
 import dragonball.exceptions.InvalidFighterAttributeException;
 import dragonball.exceptions.InvalidFighterException;
-import dragonball.exceptions.InvalidFighterTypeException;
+import dragonball.exceptions.InvalidFighterRaceException;
 import dragonball.exceptions.InvalidMoveException;
 import dragonball.exceptions.MaximumAttacksLearnedException;
 import dragonball.exceptions.NotEnoughAbilityPointsException;
@@ -138,7 +138,7 @@ public class DragonBallConsole implements GameListener {
 		try {
 			PlayableFighter fighter = game.getPlayer().createFighter(fighterType.charAt(0), in.next());
 			System.out.println(fighter.getName() + " is here!");
-		} catch (InvalidFighterTypeException e) {
+		} catch (InvalidFighterRaceException e) {
 			System.err.println(e.getMessage());
 		}
 
@@ -287,7 +287,7 @@ public class DragonBallConsole implements GameListener {
 		System.out.println("Choose an attack:");
 		boolean superAttack = false;
 		boolean ultimateAttack = false;
-		ArrayList<Attack> currentOpponentAttacks = battle.getCurrentOpponentAttacks();
+		ArrayList<Attack> currentOpponentAttacks = battle.getAttackerAttacks();
 		for (int i = 0; i < currentOpponentAttacks.size(); i++) {
 			Attack attack = currentOpponentAttacks.get(i);
 			if (!superAttack && attack instanceof SuperAttack) {
@@ -411,10 +411,10 @@ public class DragonBallConsole implements GameListener {
 	public void onBattleEvent(final BattleEvent e) {
 		final Battle battle = (Battle) e.getSource();
 
-		final PlayableFighter me = (PlayableFighter) (battle.getCurrentOpponent() instanceof PlayableFighter
-				? battle.getCurrentOpponent() : battle.getOtherOpponent());
-		final NonPlayableFighter foe = (NonPlayableFighter) (battle.getCurrentOpponent() instanceof NonPlayableFighter
-				? battle.getCurrentOpponent() : battle.getOtherOpponent());
+		final PlayableFighter me = (PlayableFighter) (battle.getAttacker() instanceof PlayableFighter
+				? battle.getAttacker() : battle.getDefender());
+		final NonPlayableFighter foe = (NonPlayableFighter) (battle.getAttacker() instanceof NonPlayableFighter
+				? battle.getAttacker() : battle.getDefender());
 
 		switch (e.getType()) {
 		case STARTED:
@@ -430,7 +430,7 @@ public class DragonBallConsole implements GameListener {
 			}
 			break;
 		case NEW_TURN:
-			if (battle.getCurrentOpponent() == me) {
+			if (battle.getAttacker() == me) {
 				printFighters(me, foe);
 				menuBattle(battle);
 			} else {

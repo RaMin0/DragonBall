@@ -146,12 +146,12 @@ public abstract class Fighter extends Character implements BattleOpponent {
 	}
 
 	@Override
-	public void onMyTurn() {
+	public void onAttackerTurn() {
 		setStamina(getStamina() + 1);
 	}
 
 	@Override
-	public void onFoeTurn() {
+	public void onDefenderTurn() {
 		setStamina(getStamina() + 1);
 	}
 }

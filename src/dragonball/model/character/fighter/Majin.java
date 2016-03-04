@@ -18,7 +18,7 @@ public class Majin extends PlayableFighter {
 	}
 
 	@Override
-	public void onMyTurn() {
+	public void onAttackerTurn() {
 		// Override to do nothing
 	}
 }

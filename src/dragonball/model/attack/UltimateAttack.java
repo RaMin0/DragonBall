@@ -12,23 +12,23 @@ public class UltimateAttack extends Attack {
 	}
 
 	@Override
-	public int getAppliedDamage(BattleOpponent me) {
-		return getDamage() + ((Fighter) me).getBlastDamage();
+	public int getAppliedDamage(BattleOpponent attacker) {
+		return getDamage() + ((Fighter) attacker).getBlastDamage();
 	}
 
 	@Override
-	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
-		Fighter meFighter = (Fighter) me;
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+		Fighter attackerFighter = (Fighter) attacker;
 
 		// only decrement ki by 3 if fighter is not a transformed saiyan
-		if (!(me instanceof Saiyan && ((Saiyan) me).isTransformed())) {
-			if (meFighter.getKi() >= 3) {
-				meFighter.setKi(meFighter.getKi() - 3);
+		if (!(attacker instanceof Saiyan && ((Saiyan) attacker).isTransformed())) {
+			if (attackerFighter.getKi() >= 3) {
+				attackerFighter.setKi(attackerFighter.getKi() - 3);
 			} else {
-				throw new NotEnoughKiException(3, meFighter.getKi());
+				throw new NotEnoughKiException(3, attackerFighter.getKi());
 			}
 		}
 
-		super.onUse(me, foe, foeBlocking);
+		super.onUse(attacker, defender, defenderBlocking);
 	}
 }

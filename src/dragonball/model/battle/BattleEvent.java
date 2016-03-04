@@ -35,7 +35,7 @@ public class BattleEvent extends EventObject {
 	public BattleEvent(Battle battle, BattleEventType type) {
 		super(battle);
 		this.type = type;
-		this.currentOpponent = battle.getCurrentOpponent();
+		this.currentOpponent = battle.getAttacker();
 	}
 
 	public BattleEventType getType() {

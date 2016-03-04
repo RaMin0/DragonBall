@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import dragonball.exceptions.DuplicateAttackException;
 import dragonball.exceptions.InvalidFighterAttributeException;
 import dragonball.exceptions.InvalidFighterException;
-import dragonball.exceptions.InvalidFighterTypeException;
+import dragonball.exceptions.InvalidFighterRaceException;
 import dragonball.exceptions.MaximumAttacksLearnedException;
 import dragonball.exceptions.NotEnoughAbilityPointsException;
 import dragonball.exceptions.NotEnoughCollectiblesException;
@@ -135,27 +135,27 @@ public class Player {
 		return maxLevel;
 	}
 
-	public PlayableFighter createFighter(char fighterType, String fighterName)
-			throws InvalidFighterTypeException {
+	public PlayableFighter createFighter(char race, String name)
+			throws InvalidFighterRaceException {
 		PlayableFighter fighter = null;
-		switch (fighterType) {
+		switch (race) {
 		case 'E':
-			fighter = new Earthling(fighterName);
+			fighter = new Earthling(name);
 			break;
 		case 'S':
-			fighter = new Saiyan(fighterName);
+			fighter = new Saiyan(name);
 			break;
 		case 'N':
-			fighter = new Namekian(fighterName);
+			fighter = new Namekian(name);
 			break;
 		case 'F':
-			fighter = new Frieza(fighterName);
+			fighter = new Frieza(name);
 			break;
 		case 'M':
-			fighter = new Majin(fighterName);
+			fighter = new Majin(name);
 			break;
 		default:
-			throw new InvalidFighterTypeException(fighterType);
+			throw new InvalidFighterRaceException(race);
 		}
 
 		fighters.add(fighter);

@@ -10,16 +10,16 @@ public class PhysicalAttack extends Attack {
 	}
 
 	@Override
-	public int getAppliedDamage(BattleOpponent me) {
-		return getDamage() + ((Fighter) me).getPhysicalDamage();
+	public int getAppliedDamage(BattleOpponent attacker) {
+		return getDamage() + ((Fighter) attacker).getPhysicalDamage();
 	}
 
 	@Override
-	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
-		super.onUse(me, foe, foeBlocking);
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+		super.onUse(attacker, defender, defenderBlocking);
 
 		// increment ki by 1
-		Fighter meFighter = (Fighter) me;
-		meFighter.setKi(meFighter.getKi() + 1);
+		Fighter attackerFighter = (Fighter) attacker;
+		attackerFighter.setKi(attackerFighter.getKi() + 1);
 	}
 }

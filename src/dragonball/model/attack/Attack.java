@@ -22,28 +22,28 @@ public abstract class Attack {
 		return damage;
 	}
 
-	public abstract int getAppliedDamage(BattleOpponent me);
+	public abstract int getAppliedDamage(BattleOpponent attacker);
 
-	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
-		Fighter foeFighter = (Fighter) foe;
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+		Fighter defenderFighter = (Fighter) defender;
 
 		// get the applied damage of the attack, taking into consideration
 		// the fighter's attributes
-		int damage = getAppliedDamage(me);
+		int damage = getAppliedDamage(attacker);
 
 		// if the fighter is a transformed saiyan, increase damage by 25%
-		if (me instanceof Saiyan && ((Saiyan) me).isTransformed()) {
+		if (attacker instanceof Saiyan && ((Saiyan) attacker).isTransformed()) {
 			damage = (int) (damage * 1.25);
 		}
 
 		// if opponent is in block mode, consume stamina first before applying
 		// remaining damage
-		if (foeBlocking) {
-			while (damage > 0 && foeFighter.getStamina() > 0) {
-				foeFighter.setStamina(foeFighter.getStamina() - 1);
+		if (defenderBlocking) {
+			while (damage > 0 && defenderFighter.getStamina() > 0) {
+				defenderFighter.setStamina(defenderFighter.getStamina() - 1);
 				damage -= damage >= 100 ? 100 : damage;
 			}
 		}
-		foeFighter.setHealthPoints(foeFighter.getHealthPoints() - damage);
+		defenderFighter.setHealthPoints(defenderFighter.getHealthPoints() - damage);
 	}
 }

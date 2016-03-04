@@ -11,19 +11,19 @@ public class SuperSaiyan extends UltimateAttack {
 	}
 
 	@Override
-	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
-		if (me instanceof Saiyan) {
-			Saiyan meSaiyan = (Saiyan) me;
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+		if (attacker instanceof Saiyan) {
+			Saiyan attackerSaiyan = (Saiyan) attacker;
 
 			// only requires 3 ki, without consuming them (override superclass behavior)
-			if (meSaiyan.getKi() >= 3) {
-				meSaiyan.setTransformed(true);
+			if (attackerSaiyan.getKi() >= 3) {
+				attackerSaiyan.setTransformed(true);
 			} else {
-				throw new NotEnoughKiException(3, meSaiyan.getKi());
+				throw new NotEnoughKiException(3, attackerSaiyan.getKi());
 			}
 		} else {
 			throw new InvalidAttackException(
-					"Only Saiyans can use the Super Saiyan attack: " + me.getClass().getSimpleName() + ".");
+					"Only Saiyans can use the Super Saiyan attack: " + attacker.getClass().getSimpleName() + ".");
 		}
 	}
 }

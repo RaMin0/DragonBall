@@ -5,13 +5,13 @@ public enum Collectible {
 
 	@Override
 	public String toString() {
-		switch (this) {
-		case SENZU_BEAN:
-			return "Senzu Bean";
-		case DRAGON_BALL:
-			return "Dragon Ball";
+		String toString = "";
+		for (String namePart : name().split("_")) {
+			if (!toString.isEmpty()) {
+				toString += " ";
+			}
+			toString += Character.toUpperCase(namePart.charAt(0)) + namePart.toLowerCase().substring(1);
 		}
-
-		return this.name().replace('_', ' ');
+		return toString;
 	}
 }

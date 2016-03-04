@@ -16,7 +16,7 @@ import dragonball.model.player.Player;
 public class Battle {
 	private BattleOpponent me;
 	private BattleOpponent foe;
-	private BattleOpponent currentOpponent;
+	private BattleOpponent attacker;
 	private BattleListener listener;
 	private boolean meBlocking;
 	private boolean foeBlocking;
@@ -24,7 +24,7 @@ public class Battle {
 	public Battle(BattleOpponent me, BattleOpponent foe) {
 		this.me = me;
 		this.foe = foe;
-		this.currentOpponent = me;
+		this.attacker = me;
 
 		// set current values appropriately
 		Fighter meFighter = (Fighter) me;
@@ -51,34 +51,34 @@ public class Battle {
 		return foe;
 	}
 
-	public BattleOpponent getCurrentOpponent() {
-		return currentOpponent;
+	public BattleOpponent getAttacker() {
+		return attacker;
 	}
 
-	public BattleOpponent getOtherOpponent() {
-		return currentOpponent == me ? foe : me;
+	public BattleOpponent getDefender() {
+		return attacker == me ? foe : me;
 	}
 
-	public ArrayList<Attack> getCurrentOpponentAttacks() {
-		Fighter currentFighter = (Fighter) currentOpponent;
+	public ArrayList<Attack> getAttackerAttacks() {
+		Fighter attackerFighter = (Fighter) attacker;
 
 		ArrayList<Attack> attacks = new ArrayList<>();
 		// make sure to include the physical attack as well
 		attacks.add(new PhysicalAttack());
-		attacks.addAll(currentFighter.getSuperAttacks());
-		attacks.addAll(currentFighter.getUltimateAttacks());
+		attacks.addAll(attackerFighter.getSuperAttacks());
+		attacks.addAll(attackerFighter.getUltimateAttacks());
 		return attacks;
 	}
 
 	private void switchTurn() {
-		currentOpponent = getOtherOpponent();
+		attacker = getDefender();
 	}
 
 	private void endTurn() {
 		// reset block mode
-		if (currentOpponent == me && foeBlocking) {
+		if (attacker == me && foeBlocking) {
 			foeBlocking = false;
-		} else if (currentOpponent == foe && meBlocking) {
+		} else if (attacker == foe && meBlocking) {
 			meBlocking = false;
 		}
 
@@ -93,8 +93,8 @@ public class Battle {
 		} else {
 			switchTurn();
 
-			getCurrentOpponent().onFoeTurn();
-			getOtherOpponent().onMyTurn();
+			getAttacker().onDefenderTurn();
+			getDefender().onAttackerTurn();
 
 			notifyOnBattleEvent(new BattleEvent(this, BattleEventType.NEW_TURN));
 		}
@@ -108,7 +108,7 @@ public class Battle {
 	// used to automate turn for opponent a.k.a. ai
 	public void play() {
 		if (new Random().nextInt(100) > 15) {
-			ArrayList<Attack> attacks = getCurrentOpponentAttacks();
+			ArrayList<Attack> attacks = getAttackerAttacks();
 			do {
 				try {
 					Attack randomAttack = attacks.get(new Random().nextInt(attacks.size()));
@@ -125,8 +125,8 @@ public class Battle {
 
 	// perform an attack and end turn
 	public void attack(Attack attack) throws InvalidAttackException {
-		attack.onUse(currentOpponent, getOtherOpponent(),
-				(currentOpponent == me && foeBlocking) || (currentOpponent == foe && meBlocking));
+		attack.onUse(attacker, getDefender(),
+				(attacker == me && foeBlocking) || (attacker == foe && meBlocking));
 
 		notifyOnBattleEvent(new BattleEvent(this, BattleEventType.ATTACK, attack));
 
@@ -135,9 +135,9 @@ public class Battle {
 
 	// perform a block and end turn
 	public void block() {
-		if (currentOpponent == me) {
+		if (attacker == me) {
 			meBlocking = true;
-		} else if (currentOpponent == foe) {
+		} else if (attacker == foe) {
 			foeBlocking = true;
 		}
 

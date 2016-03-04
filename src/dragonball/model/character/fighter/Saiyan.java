@@ -28,8 +28,8 @@ public class Saiyan extends PlayableFighter {
 	}
 
 	@Override
-	public void onMyTurn() {
-		super.onMyTurn();
+	public void onAttackerTurn() {
+		super.onAttackerTurn();
 
 		if (transformed) {
 			setKi(getKi() - 1);
@@ -42,8 +42,8 @@ public class Saiyan extends PlayableFighter {
 	}
 
 	@Override
-	public void onFoeTurn() {
-		super.onFoeTurn();
+	public void onDefenderTurn() {
+		super.onDefenderTurn();
 
 		if (transformed) {
 			setKi(getKi() - 1);

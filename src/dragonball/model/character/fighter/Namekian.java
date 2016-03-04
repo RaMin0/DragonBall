@@ -18,14 +18,14 @@ public class Namekian extends PlayableFighter {
 	}
 
 	@Override
-	public void onMyTurn() {
-		super.onMyTurn();
+	public void onAttackerTurn() {
+		super.onAttackerTurn();
 		setHealthPoints(getHealthPoints() + 50);
 	}
 
 	@Override
-	public void onFoeTurn() {
-		super.onFoeTurn();
+	public void onDefenderTurn() {
+		super.onDefenderTurn();
 		setHealthPoints(getHealthPoints() + 50);
 	}
 }
