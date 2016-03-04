@@ -198,12 +198,12 @@ public class Player {
 
 	public void assignAttack(PlayableFighter fighter, SuperAttack newAttack, SuperAttack oldAttack)
 			throws DuplicateAttackException, MaximumAttacksLearnedException {
-		assignAttack(fighter, getSuperAttacks(), newAttack, oldAttack, PlayableFighter.MAX_SUPER_ATTACKS);
+		assignAttack(fighter, fighter.getSuperAttacks(), newAttack, oldAttack, PlayableFighter.MAX_SUPER_ATTACKS);
 	}
 
 	public void assignAttack(PlayableFighter fighter, UltimateAttack newAttack, UltimateAttack oldAttack)
 			throws DuplicateAttackException, MaximumAttacksLearnedException {
-		assignAttack(fighter, getUltimateAttacks(), newAttack, oldAttack, PlayableFighter.MAX_ULTIMATE_ATTACKS);
+		assignAttack(fighter, fighter.getUltimateAttacks(), newAttack, oldAttack, PlayableFighter.MAX_ULTIMATE_ATTACKS);
 	}
 
 	@SuppressWarnings("unchecked")
