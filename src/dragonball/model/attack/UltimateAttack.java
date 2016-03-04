@@ -12,7 +12,7 @@ public class UltimateAttack extends Attack {
 	}
 
 	@Override
-	public int getAppliedDamage(BattleOpponent me, BattleOpponent foe) {
+	public int getAppliedDamage(BattleOpponent me) {
 		return getDamage() + ((Fighter) me).getBlastDamage();
 	}
 

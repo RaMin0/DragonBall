@@ -22,14 +22,14 @@ public abstract class Attack {
 		return damage;
 	}
 
-	public abstract int getAppliedDamage(BattleOpponent me, BattleOpponent foe);
+	public abstract int getAppliedDamage(BattleOpponent me);
 
 	public void onUse(BattleOpponent me, BattleOpponent foe, boolean foeBlocking) throws InvalidAttackException {
 		Fighter foeFighter = (Fighter) foe;
 
 		// get the applied damage of the attack, taking into consideration
 		// the fighter's attributes
-		int damage = getAppliedDamage(me, foe);
+		int damage = getAppliedDamage(me);
 
 		// if the fighter is a transformed saiyan, increase damage by 25%
 		if (me instanceof Saiyan && ((Saiyan) me).isTransformed()) {
