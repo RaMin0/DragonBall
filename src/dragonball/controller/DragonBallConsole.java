@@ -287,7 +287,7 @@ public class DragonBallConsole implements GameListener {
 		System.out.println("Choose an attack:");
 		boolean superAttack = false;
 		boolean ultimateAttack = false;
-		ArrayList<Attack> currentOpponentAttacks = battle.getAttackerAttacks();
+		ArrayList<Attack> currentOpponentAttacks = battle.getAssignedAttacks();
 		for (int i = 0; i < currentOpponentAttacks.size(); i++) {
 			Attack attack = currentOpponentAttacks.get(i);
 			if (!superAttack && attack instanceof SuperAttack) {

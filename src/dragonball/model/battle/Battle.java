@@ -59,7 +59,7 @@ public class Battle {
 		return attacker == me ? foe : me;
 	}
 
-	public ArrayList<Attack> getAttackerAttacks() {
+	public ArrayList<Attack> getAssignedAttacks() {
 		Fighter attackerFighter = (Fighter) attacker;
 
 		ArrayList<Attack> attacks = new ArrayList<>();
@@ -108,7 +108,7 @@ public class Battle {
 	// used to automate turn for opponent a.k.a. ai
 	public void play() {
 		if (new Random().nextInt(100) > 15) {
-			ArrayList<Attack> attacks = getAttackerAttacks();
+			ArrayList<Attack> attacks = getAssignedAttacks();
 			do {
 				try {
 					Attack randomAttack = attacks.get(new Random().nextInt(attacks.size()));
