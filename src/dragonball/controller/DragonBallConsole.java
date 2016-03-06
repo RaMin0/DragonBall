@@ -212,7 +212,7 @@ public class DragonBallConsole implements GameListener {
 		System.out.println("- Super Attacks");
 		for (int i = 0; i < Fighter.MAX_SUPER_ATTACKS; i++) {
 			SuperAttack attack = fighter.getSuperAttacks().size() > i ? fighter.getSuperAttacks().get(i) : null;
-			System.out.println("  " + (i + 1) + "." + (attack == null ? "(EMPTY)" : attack.getName()));
+			System.out.println("  " + (i + 1) + ". " + (attack == null ? "(EMPTY)" : attack.getName()));
 		}
 		System.out.println("- Ultimate Attacks");
 		for (int i = 0; i < Fighter.MAX_ULTIMATE_ATTACKS; i++) {
