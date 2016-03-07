@@ -230,8 +230,6 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 	@Override
 	public void onWishChosen(DragonWish wish) {
 		state = GameState.WORLD;
-
-		notifyOnDragonWishGranted(wish);
 	}
 
 	@Override
@@ -338,12 +336,6 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 	public void notifyOnDragonCalled(Dragon dragon) {
 		if (listener != null) {
 			listener.onDragonCalled(dragon);
-		}
-	}
-
-	public void notifyOnDragonWishGranted(DragonWish wish) {
-		if (listener != null) {
-			listener.onDragonWishGranted(wish);
 		}
 	}
 }

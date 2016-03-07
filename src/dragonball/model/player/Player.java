@@ -101,10 +101,6 @@ public class Player {
 	}
 
 	public PlayableFighter getActiveFighter() {
-		// if active fighter is not yet set, set the first fighter to be the active one
-		if (activeFighter == null && fighters.size() > 0) {
-			activeFighter = fighters.get(0);
-		}
 		return activeFighter;
 	}
 
@@ -159,6 +155,10 @@ public class Player {
 		}
 
 		fighters.add(fighter);
+
+		if (fighters.size() == 1) {
+			activeFighter = fighter;
+		}
 
 		return fighter;
 	}

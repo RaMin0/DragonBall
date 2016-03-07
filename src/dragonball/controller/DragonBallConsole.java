@@ -367,29 +367,23 @@ public class DragonBallConsole implements GameListener {
 		}
 
 		System.out.print("> ");
-		game.getPlayer().chooseWish(wishes[in.nextInt() - 1]);
-	}
+		DragonWish wish = wishes[in.nextInt() - 1];
 
-	@Override
-	public void onDragonWishGranted(final DragonWish wish) {
-		Dragon dragon = ((Dragon) wish.getSource());
+		game.getPlayer().chooseWish(wish);
+
 		System.out.println(dragon.getName() + ": Your wish has been granted... FAREWELL!");
 
 		String wishText = null;
 		switch (wish.getType()) {
 		case SUPER_ATTACK:
-			wishText = "You've unlocked the " + wish.getSuperAttack().getName()
-					+ " super attack.";
+			wishText = "You've unlocked the " + wish.getSuperAttack().getName() + " super attack.";
 			break;
 		case ULTIMATE_ATTACK:
-			wishText = "You've unlocked the " + wish.getUltimateAttack().getName()
-					+ " ultimate attack.";
+			wishText = "You've unlocked the " + wish.getUltimateAttack().getName() + " ultimate attack.";
 			break;
 		case SENZU_BEANS:
 			int senzuBeans = game.getPlayer().getSenzuBeans();
-			wishText = "You now have " + senzuBeans + " Senzu Bean"
-					+ (senzuBeans == 1 ? "" : "s")
-					+ ".";
+			wishText = "You now have " + senzuBeans + " Senzu Bean" + (senzuBeans == 1 ? "" : "s") + ".";
 			break;
 		case ABILITY_POINTS:
 			PlayableFighter activeFighter = game.getPlayer().getActiveFighter();
