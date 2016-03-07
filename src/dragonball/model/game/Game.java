@@ -241,8 +241,8 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		Battle battle = new Battle(player.getActiveFighter(), foe);
 		// handle winning and losing in a battle
 		battle.setListener(this);
-
-		notifyOnBattle(battle);
+		// start the battle
+		battle.start();
 	}
 
 	@Override
@@ -326,12 +326,6 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 	public void notifyOnCollectibleFound(Collectible collectible) {
 		if (listener != null) {
 			listener.onCollectibleFound(collectible);
-		}
-	}
-
-	public void notifyOnBattle(Battle battle) {
-		if (listener != null) {
-			listener.onBattle(battle);
 		}
 	}
 

@@ -403,11 +403,6 @@ public class DragonBallConsole implements GameListener {
 	}
 
 	@Override
-	public void onBattle(final Battle battle) {
-		battle.start();
-	}
-
-	@Override
 	public void onBattleEvent(final BattleEvent e) {
 		final Battle battle = (Battle) e.getSource();
 
