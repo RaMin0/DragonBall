@@ -131,7 +131,7 @@ public class Player {
 		return maxLevel;
 	}
 
-	public PlayableFighter createFighter(char race, String name)
+	public void createFighter(char race, String name)
 			throws InvalidFighterRaceException {
 		PlayableFighter fighter = null;
 		switch (race) {
@@ -159,8 +159,6 @@ public class Player {
 		if (fighters.size() == 1) {
 			activeFighter = fighter;
 		}
-
-		return fighter;
 	}
 
 	public void upgradeFighter(PlayableFighter fighter, char fighterAttribute)

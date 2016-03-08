@@ -136,7 +136,8 @@ public class DragonBallConsole implements GameListener {
 		String fighterType = in.next();
 		System.out.print("Name your new " + fighterType + " fighter:\n> ");
 		try {
-			PlayableFighter fighter = game.getPlayer().createFighter(fighterType.charAt(0), in.next());
+			game.getPlayer().createFighter(fighterType.charAt(0), in.next());
+			PlayableFighter fighter = game.getPlayer().getFighters().get(game.getPlayer().getFighters().size() - 1);
 			System.out.println(fighter.getName() + " is here!");
 		} catch (InvalidFighterRaceException e) {
 			System.err.println(e.getMessage());
