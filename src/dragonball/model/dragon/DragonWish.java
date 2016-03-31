@@ -13,6 +13,12 @@ public class DragonWish extends EventObject {
 	private SuperAttack superAttack;
 	private UltimateAttack ultimateAttack;
 
+	// constructor for others
+	public DragonWish(Dragon dragon, DragonWishType type) {
+		super(dragon);
+		this.type = type;
+	}
+
 	// constructor for SENZU_BEANS, ABILITY_POINTS
 	public DragonWish(Dragon dragon, DragonWishType type, int senzuBeansOrAbilityPoints) {
 		this(dragon, type);
@@ -39,12 +45,6 @@ public class DragonWish extends EventObject {
 	public DragonWish(Dragon dragon, DragonWishType type, UltimateAttack ultimateAttack) {
 		this(dragon, type);
 		this.ultimateAttack = ultimateAttack;
-	}
-
-	// constructor for others
-	private DragonWish(Dragon dragon, DragonWishType type) {
-		super(dragon);
-		this.type = type;
 	}
 
 	public DragonWishType getType() {

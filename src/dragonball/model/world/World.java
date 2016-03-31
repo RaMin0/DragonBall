@@ -149,11 +149,7 @@ public class World implements CellListener {
 	}
 
 	public void resetPlayerPosition() {
-		try {
-			moveTo(MAP_SIZE - 1, MAP_SIZE - 1);
-		} catch (InvalidMoveException e) {
-			e.printStackTrace();
-		}
+		playerRow = playerColumn = MAP_SIZE - 1;
 	}
 
 	@Override

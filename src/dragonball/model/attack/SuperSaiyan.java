@@ -11,7 +11,13 @@ public class SuperSaiyan extends UltimateAttack {
 	}
 
 	@Override
-	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+	public int getAppliedDamage(BattleOpponent attacker) {
+		return 0;
+	}
+
+	@Override
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking)
+			throws InvalidAttackException {
 		if (attacker instanceof Saiyan) {
 			Saiyan attackerSaiyan = (Saiyan) attacker;
 

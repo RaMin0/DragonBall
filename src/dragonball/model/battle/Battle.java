@@ -17,9 +17,9 @@ public class Battle {
 	private BattleOpponent me;
 	private BattleOpponent foe;
 	private BattleOpponent attacker;
-	private BattleListener listener;
 	private boolean meBlocking;
 	private boolean foeBlocking;
+	private BattleListener listener;
 
 	public Battle(BattleOpponent me, BattleOpponent foe) {
 		this.me = me;
@@ -59,6 +59,14 @@ public class Battle {
 		return attacker == me ? foe : me;
 	}
 
+	public boolean isMeBlocking() {
+		return meBlocking;
+	}
+
+	public boolean isFoeBlocking() {
+		return foeBlocking;
+	}
+
 	public ArrayList<Attack> getAssignedAttacks() {
 		Fighter attackerFighter = (Fighter) attacker;
 
@@ -70,11 +78,11 @@ public class Battle {
 		return attacks;
 	}
 
-	private void switchTurn() {
+	public void switchTurn() {
 		attacker = getDefender();
 	}
 
-	private void endTurn() {
+	public void endTurn() {
 		// reset block mode
 		if (attacker == me && foeBlocking) {
 			foeBlocking = false;
