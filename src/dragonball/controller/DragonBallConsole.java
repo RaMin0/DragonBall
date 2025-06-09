@@ -29,20 +29,18 @@ import dragonball.model.game.GameListener;
 
 public class DragonBallConsole implements GameListener {
 	private Game game;
-	String[] fighterTypes;
 	private Scanner in;
 
 	public DragonBallConsole() {
 		game = new Game();
 		game.setListener(this);
-		fighterTypes = new String[] { "Earthling", "Frieza", "Majin", "Namekian", "Saiyan" };
 
 		in = new Scanner(System.in);
 
 		System.out.print("Hey, there ... Umm, What's your name?\n> ");
 		game.getPlayer().setName(in.next());
-		System.out.println("Ok, " + game.getPlayer().getName() + ", nice meeting you! Before you start your journey, "
-				+ "you have to create your first fighter.");
+		System.out.println("Ok, " + game.getPlayer().getName()
+				+ ", nice meeting you! Before you start your journey, you have to create your first fighter.");
 
 		menuWorldCreateFighter();
 	}
@@ -60,20 +58,20 @@ public class DragonBallConsole implements GameListener {
 
 		try {
 			switch (choice) {
-			case 'w':
-				game.getWorld().moveUp();
-				break;
-			case 's':
-				game.getWorld().moveDown();
-				break;
-			case 'a':
-				game.getWorld().moveLeft();
-				break;
-			case 'd':
-				game.getWorld().moveRight();
-				break;
-			case 'm':
-				menuWorld();
+				case 'w':
+					game.getWorld().moveUp();
+					break;
+				case 's':
+					game.getWorld().moveDown();
+					break;
+				case 'a':
+					game.getWorld().moveLeft();
+					break;
+				case 'd':
+					game.getWorld().moveRight();
+					break;
+				case 'm':
+					menuWorld();
 			}
 		} catch (InvalidMoveException e) {
 			System.err.println(e.getMessage());
@@ -105,32 +103,32 @@ public class DragonBallConsole implements GameListener {
 		System.out.println("2. Active Fighter");
 		System.out.println("3. Upgrade Fighter");
 		System.out.println("4. Assign Attack");
-//		System.out.println("5. Load/Save");
+		// System.out.println("5. Load/Save");
 		System.out.println("6. Exit");
 		System.out.print("> ");
 		switch (in.nextInt()) {
-		case 1:
-			menuWorldCreateFighter();
-			break;
-		case 2:
-			menuWorldActiveFighter();
-			break;
-		case 3:
-			menuWorldUpgradeFighter();
-			break;
-		case 4:
-			menuWorldAssignAttack();
-			break;
-		case 6:
-			System.out.println("Good-bye, " + game.getPlayer().getName() + "!");
-			System.exit(0);
+			case 1:
+				menuWorldCreateFighter();
+				break;
+			case 2:
+				menuWorldActiveFighter();
+				break;
+			case 3:
+				menuWorldUpgradeFighter();
+				break;
+			case 4:
+				menuWorldAssignAttack();
+				break;
+			case 6:
+				System.out.println("Good-bye, " + game.getPlayer().getName() + "!");
+				System.exit(0);
 		}
 	}
 
 	private void menuWorldCreateFighter() {
 		System.out.println("Choose a race:");
-		for (String fighterType : fighterTypes) {
-			System.out.println("- " + fighterType);
+		for (Class<?> fighterClass : PlayableFighter.getPlayableFighters()) {
+			System.out.println("- " + fighterClass.getSimpleName());
 		}
 		System.out.print("> ");
 		String fighterType = in.next();
@@ -166,8 +164,7 @@ public class DragonBallConsole implements GameListener {
 
 	private void menuWorldUpgradeFighter() {
 		System.out.println("Choose an attribute:");
-		String[] fighterAttributes = new String[] { "Health Points", "Blast Damage", "Physical Damage", "Ki",
-				"Stamina" };
+		String[] fighterAttributes = new String[] { "Health Points", "Blast Damage", "Physical Damage", "Ki", "Stamina" };
 		for (int i = 0; i < fighterAttributes.length; i++) {
 			System.out.println((i + 1) + ". " + fighterAttributes[i]);
 		}
@@ -180,26 +177,26 @@ public class DragonBallConsole implements GameListener {
 
 			int attributeValue = -1;
 			switch (fighterAttribute.charAt(0)) {
-			case 'H':
-				attributeValue = fighter.getMaxHealthPoints();
-				break;
-			case 'B':
-				attributeValue = fighter.getBlastDamage();
-				break;
-			case 'P':
-				attributeValue = fighter.getPhysicalDamage();
-				break;
-			case 'K':
-				attributeValue = fighter.getMaxKi();
-				break;
-			case 'S':
-				attributeValue = fighter.getMaxStamina();
-				break;
+				case 'H':
+					attributeValue = fighter.getMaxHealthPoints();
+					break;
+				case 'B':
+					attributeValue = fighter.getBlastDamage();
+					break;
+				case 'P':
+					attributeValue = fighter.getPhysicalDamage();
+					break;
+				case 'K':
+					attributeValue = fighter.getMaxKi();
+					break;
+				case 'S':
+					attributeValue = fighter.getMaxStamina();
+					break;
 			}
 
 			String isOrAre = fighterAttribute.charAt(fighterAttribute.length() - 1) == 's' ? "are" : "is";
-			System.out.println(fighter.getName() + "'s " + fighterAttribute.toLowerCase() + " " + isOrAre + " now "
-					+ attributeValue + ".");
+			System.out.println(
+					fighter.getName() + "'s " + fighterAttribute.toLowerCase() + " " + isOrAre + " now " + attributeValue + ".");
 		} catch (NotEnoughAbilityPointsException | InvalidFighterException
 				| InvalidFighterAttributeException e) {
 			System.err.println(e.getMessage());
@@ -217,8 +214,7 @@ public class DragonBallConsole implements GameListener {
 		}
 		System.out.println("- Ultimate Attacks");
 		for (int i = 0; i < Fighter.MAX_ULTIMATE_ATTACKS; i++) {
-			UltimateAttack attack = fighter.getUltimateAttacks().size() > i ? fighter.getUltimateAttacks().get(i)
-					: null;
+			UltimateAttack attack = fighter.getUltimateAttacks().size() > i ? fighter.getUltimateAttacks().get(i) : null;
 			System.out.println("  " + (i + 5) + ". " + (attack == null ? "(EMPTY)" : attack.getName()));
 		}
 		System.out.print("> ");
@@ -233,7 +229,8 @@ public class DragonBallConsole implements GameListener {
 			}
 			System.out.print("> ");
 			SuperAttack fighterAttack = slot <= fighter.getSuperAttacks().size()
-					? fighter.getSuperAttacks().get(slot - 1) : null;
+					? fighter.getSuperAttacks().get(slot - 1)
+					: null;
 			SuperAttack playerAttack = game.getPlayer().getSuperAttacks().get(in.nextInt() - 1);
 			try {
 				game.getPlayer().assignAttack(fighter, playerAttack, fighterAttack);
@@ -249,7 +246,8 @@ public class DragonBallConsole implements GameListener {
 			}
 			System.out.print("> ");
 			UltimateAttack fighterAttack = slot <= fighter.getUltimateAttacks().size()
-					? fighter.getUltimateAttacks().get(slot - 1) : null;
+					? fighter.getUltimateAttacks().get(slot - 1)
+					: null;
 			UltimateAttack playerAttack = game.getPlayer().getUltimateAttacks().get(in.nextInt() - 1);
 			try {
 				game.getPlayer().assignAttack(fighter, playerAttack, fighterAttack);
@@ -268,15 +266,15 @@ public class DragonBallConsole implements GameListener {
 		System.out.print("> ");
 		boolean ok = true;
 		switch (in.nextInt()) {
-		case 1:
-			ok = menuBattleAttack(battle);
-			break;
-		case 2:
-			menuBattleBlock(battle);
-			break;
-		case 3:
-			ok = menuBattleUse(battle);
-			break;
+			case 1:
+				ok = menuBattleAttack(battle);
+				break;
+			case 2:
+				menuBattleBlock(battle);
+				break;
+			case 3:
+				ok = menuBattleUse(battle);
+				break;
 		}
 
 		if (!ok) {
@@ -299,8 +297,8 @@ public class DragonBallConsole implements GameListener {
 				ultimateAttack = true;
 				System.out.println("- Ultimate Attacks");
 			}
-			System.out.println(
-					(attack instanceof PhysicalAttack ? (i + 1) + ". " : "  " + (i + 1) + ". ") + attack.getName());
+			System.out
+					.println((attack instanceof PhysicalAttack ? (i + 1) + ". " : "  " + (i + 1) + ". ") + attack.getName());
 		}
 		System.out.print("> ");
 		Attack attack = currentOpponentAttacks.get(in.nextInt() - 1);
@@ -324,9 +322,9 @@ public class DragonBallConsole implements GameListener {
 		System.out.print("> ");
 		Collectible collectible = null;
 		switch (in.nextInt()) {
-		case 1:
-			collectible = Collectible.SENZU_BEAN;
-			break;
+			case 1:
+				collectible = Collectible.SENZU_BEAN;
+				break;
 		}
 		try {
 			battle.use(game.getPlayer(), collectible);
@@ -348,20 +346,19 @@ public class DragonBallConsole implements GameListener {
 			final DragonWish wish = wishes[i];
 			String wishText = null;
 			switch (wish.getType()) {
-			case SUPER_ATTACK:
-				wishText = wish.getSuperAttack().getName();
-				break;
-			case ULTIMATE_ATTACK:
-				wishText = wish.getUltimateAttack().getName();
-				break;
-			case SENZU_BEANS:
-				wishText = wish.getSenzuBeans() + " Senzu Bean"
-						+ (wish.getSenzuBeans() == 1 ? "" : "s");
-				break;
-			case ABILITY_POINTS:
-				wishText = wish.getAbilityPoints() + " Ability Point"
-						+ (wish.getAbilityPoints() == 1 ? "" : "s");
-				break;
+				case SUPER_ATTACK:
+					wishText = wish.getSuperAttack().getName();
+					break;
+				case ULTIMATE_ATTACK:
+					wishText = wish.getUltimateAttack().getName();
+					break;
+				case SENZU_BEANS:
+					wishText = wish.getSenzuBeans() + " Senzu Bean" + (wish.getSenzuBeans() == 1 ? "" : "s");
+					break;
+				case ABILITY_POINTS:
+					wishText = wish.getAbilityPoints() + " Ability Point"
+							+ (wish.getAbilityPoints() == 1 ? "" : "s");
+					break;
 			}
 
 			System.out.println((i + 1) + ". " + wishText);
@@ -376,22 +373,22 @@ public class DragonBallConsole implements GameListener {
 
 		String wishText = null;
 		switch (wish.getType()) {
-		case SUPER_ATTACK:
-			wishText = "You've unlocked the " + wish.getSuperAttack().getName() + " super attack.";
-			break;
-		case ULTIMATE_ATTACK:
-			wishText = "You've unlocked the " + wish.getUltimateAttack().getName() + " ultimate attack.";
-			break;
-		case SENZU_BEANS:
-			int senzuBeans = game.getPlayer().getSenzuBeans();
-			wishText = "You now have " + senzuBeans + " Senzu Bean" + (senzuBeans == 1 ? "" : "s") + ".";
-			break;
-		case ABILITY_POINTS:
-			PlayableFighter activeFighter = game.getPlayer().getActiveFighter();
-			int abilityPoints = activeFighter.getAbilityPoints();
-			wishText = activeFighter.getName() + " now has " + abilityPoints + " Ability Point"
-					+ (abilityPoints == 1 ? "" : "s") + ".";
-			break;
+			case SUPER_ATTACK:
+				wishText = "You've unlocked the " + wish.getSuperAttack().getName() + " super attack.";
+				break;
+			case ULTIMATE_ATTACK:
+				wishText = "You've unlocked the " + wish.getUltimateAttack().getName() + " ultimate attack.";
+				break;
+			case SENZU_BEANS:
+				int senzuBeans = game.getPlayer().getSenzuBeans();
+				wishText = "You now have " + senzuBeans + " Senzu Bean" + (senzuBeans == 1 ? "" : "s") + ".";
+				break;
+			case ABILITY_POINTS:
+				PlayableFighter activeFighter = game.getPlayer().getActiveFighter();
+				int abilityPoints = activeFighter.getAbilityPoints();
+				wishText = activeFighter.getName() + " now has " + abilityPoints + " Ability Point"
+						+ (abilityPoints == 1 ? "" : "s") + ".";
+				break;
 		}
 
 		System.out.println(wishText);
@@ -402,42 +399,44 @@ public class DragonBallConsole implements GameListener {
 		final Battle battle = (Battle) e.getSource();
 
 		final PlayableFighter me = (PlayableFighter) (battle.getAttacker() instanceof PlayableFighter
-				? battle.getAttacker() : battle.getDefender());
+				? battle.getAttacker()
+				: battle.getDefender());
 		final NonPlayableFighter foe = (NonPlayableFighter) (battle.getAttacker() instanceof NonPlayableFighter
-				? battle.getAttacker() : battle.getDefender());
+				? battle.getAttacker()
+				: battle.getDefender());
 
 		switch (e.getType()) {
-		case STARTED:
-			System.out.println("Watch out!!! " + foe.getName() + " started to attack you...");
-			break;
-		case ENDED:
-			if (e.getWinner() == me) {
-				System.out.println(foe.getName() + " was defeated. Your XP is now " + me.getXp() + "/"
-						+ me.getTargetXp() + ". Your level is " + me.getLevel() + ".");
-			} else {
-				System.out.println("Oops, you have been defeated!");
-				System.out.println("I wasn't strong enough. Now I have to start all over again...");
-			}
-			break;
-		case NEW_TURN:
-			if (battle.getAttacker() == me) {
-				printFighters(me, foe);
-				menuBattle(battle);
-			} else {
-				battle.play();
-			}
-			break;
-		case ATTACK:
-			System.out.println((e.getCurrentOpponent() == me ? me.getName() : foe.getName()) + " used "
-					+ e.getAttack().getName() + ".");
-			break;
-		case BLOCK:
-			System.out.println((e.getCurrentOpponent() == me ? me.getName() : foe.getName()) + " used block.");
-			break;
-		case USE:
-			System.out.println((e.getCurrentOpponent() == me ? me.getName() : foe.getName()) + " used a "
-					+ e.getCollectible() + ".");
-			break;
+			case STARTED:
+				System.out.println("Watch out!!! " + foe.getName() + " started to attack you...");
+				break;
+			case ENDED:
+				if (e.getWinner() == me) {
+					System.out.println(foe.getName() + " was defeated. Your XP is now " + me.getXp() + "/" + me.getTargetXp()
+							+ ". Your level is " + me.getLevel() + ".");
+				} else {
+					System.out.println("Oops, you have been defeated!");
+					System.out.println("I wasn't strong enough. Now I have to start all over again...");
+				}
+				break;
+			case NEW_TURN:
+				if (battle.getAttacker() == me) {
+					printFighters(me, foe);
+					menuBattle(battle);
+				} else {
+					battle.play();
+				}
+				break;
+			case ATTACK:
+				System.out.println(
+						(e.getCurrentOpponent() == me ? me.getName() : foe.getName()) + " used " + e.getAttack().getName() + ".");
+				break;
+			case BLOCK:
+				System.out.println((e.getCurrentOpponent() == me ? me.getName() : foe.getName()) + " used block.");
+				break;
+			case USE:
+				System.out.println(
+						(e.getCurrentOpponent() == me ? me.getName() : foe.getName()) + " used a " + e.getCollectible() + ".");
+				break;
 		}
 	}
 
@@ -445,12 +444,12 @@ public class DragonBallConsole implements GameListener {
 	public void onCollectibleFound(Collectible collectible) {
 		int collectibles = 0;
 		switch (collectible) {
-		case SENZU_BEAN:
-			collectibles = game.getPlayer().getSenzuBeans();
-			break;
-		case DRAGON_BALL:
-			collectibles = game.getPlayer().getDragonBalls();
-			break;
+			case SENZU_BEAN:
+				collectibles = game.getPlayer().getSenzuBeans();
+				break;
+			case DRAGON_BALL:
+				collectibles = game.getPlayer().getDragonBalls();
+				break;
 		}
 
 		System.out.println("Look .. A " + collectible + "! You now have " + collectibles + " " + collectible

@@ -24,7 +24,8 @@ public abstract class Attack {
 
 	public abstract int getAppliedDamage(BattleOpponent attacker);
 
-	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking)
+			throws InvalidAttackException {
 		Fighter defenderFighter = (Fighter) defender;
 
 		// get the applied damage of the attack, taking into consideration

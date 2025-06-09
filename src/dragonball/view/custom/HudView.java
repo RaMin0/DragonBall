@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JTextPane;
@@ -81,10 +82,11 @@ public class HudView extends JTextPane {
 				Rectangle r = null;
 				char dotChar = ' ';
 				try {
-					r = component.modelToView(dot);
-					if (r == null) {
+					Rectangle2D r2 = component.modelToView2D(dot);
+					if (r2 == null) {
 						return;
 					}
+					r = r2.getBounds();
 					dotChar = component.getText(dot, 1).charAt(0);
 				} catch (BadLocationException e) {
 					return;

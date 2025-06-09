@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -34,7 +33,7 @@ public class BattleOpponentView extends JPanel {
 
 	public BattleOpponentView(boolean foe) {
 		this.foe = foe;
-		image = "gfx" + File.separator + (foe ? "foe" : "me") + "-thumb.gif";
+		image = "/gfx/" + (foe ? "foe" : "me") + "-thumb.gif";
 		prgStaminas = new JCustomProgressBar[20];
 		prgKis = new JCustomProgressBar[20];
 
@@ -48,7 +47,7 @@ public class BattleOpponentView extends JPanel {
 		setChildBounds(pnlImageLevel, 5, getHeight() - (foe ? 229 : 117), 96, 112);
 		add(pnlImageLevel);
 
-		lblAttack = new JLabel(new ImageIcon("gfx" + File.separator + "attack.gif")) {
+		lblAttack = new JLabel(new ImageIcon(getClass().getResource("/gfx/attack.gif"))) {
 			@Override
 			protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g;
@@ -65,7 +64,7 @@ public class BattleOpponentView extends JPanel {
 		setChildBounds(lblAttack, 5, getHeight() - (foe ? 261 : 149), 128, 128);
 		add(lblAttack);
 
-		lblImage = new JLabel(new ImageIcon(image)) {
+		lblImage = new JLabel(new ImageIcon(getClass().getResource(image))) {
 			@Override
 			protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g;
@@ -124,8 +123,7 @@ public class BattleOpponentView extends JPanel {
 
 		JLabel lblStaminaLabel = new JLabel("ST:");
 		lblStaminaLabel.setFont(lblLevel.getFont());
-		lblStaminaLabel.setBounds(lblKiLabel.getX(),
-				lblKiLabel.getY() + lblKiLabel.getHeight() + 2, lblKiLabel.getWidth(),
+		lblStaminaLabel.setBounds(lblKiLabel.getX(), lblKiLabel.getY() + lblKiLabel.getHeight() + 2, lblKiLabel.getWidth(),
 				lblKiLabel.getHeight());
 		pnlNameInfo.add(lblStaminaLabel);
 
@@ -140,8 +138,7 @@ public class BattleOpponentView extends JPanel {
 			prgKi.setMaximum(1);
 			prgKi.setForeground(Color.YELLOW);
 			prgKi.setBackground(Color.BLACK);
-			prgKi.setPreferredSize(
-					new Dimension((int) ((pnlNameInfo.getWidth() - 40) / 10), 11));
+			prgKi.setPreferredSize(new Dimension((int) ((pnlNameInfo.getWidth() - 40) / 10), 11));
 			pnlKi.add(prgKi);
 			prgKis[i] = prgKi;
 
@@ -149,8 +146,7 @@ public class BattleOpponentView extends JPanel {
 			prgStamina.setMaximum(1);
 			prgStamina.setForeground(Color.GREEN);
 			prgStamina.setBackground(Color.BLACK);
-			prgStamina.setPreferredSize(
-					new Dimension((int) ((pnlNameInfo.getWidth() - 40) / 10), 11));
+			prgStamina.setPreferredSize(new Dimension((int) ((pnlNameInfo.getWidth() - 40) / 10), 11));
 			pnlStamina.add(prgStamina);
 			prgStaminas[i] = prgStamina;
 		}
@@ -198,7 +194,7 @@ public class BattleOpponentView extends JPanel {
 
 	public void setBoss(boolean boss) {
 		((ImageIcon) lblImage.getIcon()).setImage(
-				new ImageIcon(image = "gfx" + File.separator + (boss ? "boss" : "foe") + "-thumb.gif").getImage());
+				new ImageIcon(getClass().getResource(image = "/gfx/" + (boss ? "boss" : "foe") + "-thumb.gif")).getImage());
 	}
 
 	private void setChildBounds(Component c, int x, int y, double width, double height) {

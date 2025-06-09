@@ -12,8 +12,8 @@ public class Saiyan extends PlayableFighter {
 		super(name, 1000, 150, 100, 5, 3);
 	}
 
-	public Saiyan(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage,
-			int physicalDamage, int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
+	public Saiyan(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage, int physicalDamage,
+			int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
 			ArrayList<UltimateAttack> ultimateAttacks) {
 		super(name, level, xp, targetXp, maxHealthPoints, blastDamage, physicalDamage, abilityPoints, maxKi, maxStamina,
 				superAttacks, ultimateAttacks);

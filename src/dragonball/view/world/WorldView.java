@@ -3,8 +3,8 @@ package dragonball.view.world;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashSet;
@@ -15,7 +15,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 
-import dragonball.custom.Tuple;
 import dragonball.view.cell.CellView;
 import dragonball.view.custom.HudView;
 import dragonball.view.custom.MenuView;
@@ -29,10 +28,10 @@ public class WorldView extends JPanel {
 	private CellView[][] map;
 	private Clip clip;
 	private Set<Listener> listeners = new HashSet<>();
-	private ArrayList<Tuple<String, Item.Listener>> createFighterSubItems;
-	private ArrayList<Tuple<String, Item.Listener>> activeFighterSubItems;
-	private ArrayList<Tuple<String, Item.Listener>> upgradeFighterSubItems;
-	private ArrayList<Tuple<String, Item.Listener>> assignFighterAttackSubItems;
+	private ArrayList<SimpleEntry<String, Item.Listener>> createFighterSubItems;
+	private ArrayList<SimpleEntry<String, Item.Listener>> activeFighterSubItems;
+	private ArrayList<SimpleEntry<String, Item.Listener>> upgradeFighterSubItems;
+	private ArrayList<SimpleEntry<String, Item.Listener>> assignFighterAttackSubItems;
 
 	public WorldView(int size) {
 		map = new CellView[size][size];
@@ -67,8 +66,11 @@ public class WorldView extends JPanel {
 	public void enterWorld() {
 		try {
 			clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-					new BufferedInputStream(new FileInputStream("sfx" + File.separator + "world.wav")));
+			InputStream audioStream = getClass().getClassLoader().getResourceAsStream("sfx/world.wav");
+			if (audioStream == null) {
+				throw new Exception("Resource not found: sfx/world.wav");
+			}
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(audioStream));
 			clip.open(inputStream);
 
 			if (GameView.PLAY_SOUND) {
@@ -86,19 +88,19 @@ public class WorldView extends JPanel {
 	}
 
 	public void addCreateFighterSubItem(String name, Item.Listener listener) {
-		createFighterSubItems.add(new Tuple<>(name, listener));
+		createFighterSubItems.add(new SimpleEntry<>(name, listener));
 	}
 
 	public void addActiveFighterSubItem(String name, Item.Listener listener) {
-		activeFighterSubItems.add(new Tuple<>(name, listener));
+		activeFighterSubItems.add(new SimpleEntry<>(name, listener));
 	}
 
 	public void addUpgradeFighterSubItem(String name, Item.Listener listener) {
-		upgradeFighterSubItems.add(new Tuple<>(name, listener));
+		upgradeFighterSubItems.add(new SimpleEntry<>(name, listener));
 	}
 
 	public void addAssignFighterAttackSubItem(String name, Item.Listener listener) {
-		assignFighterAttackSubItems.add(new Tuple<>(name, listener));
+		assignFighterAttackSubItems.add(new SimpleEntry<>(name, listener));
 	}
 
 	public void clearAssignFighterAttackSubItems() {
@@ -122,9 +124,9 @@ public class WorldView extends JPanel {
 			@Override
 			public void onAction(Item item) {
 				final Menu createFighterMenu = menuView.addMenu();
-				for (Tuple<String, Item.Listener> createFighterSubItemTuple : createFighterSubItems) {
-					String itemName = createFighterSubItemTuple.getA();
-					Item.Listener itemListener = createFighterSubItemTuple.getB();
+				for (SimpleEntry<String, Item.Listener> createFighterSubItemEntry : createFighterSubItems) {
+					String itemName = createFighterSubItemEntry.getKey();
+					Item.Listener itemListener = createFighterSubItemEntry.getValue();
 					Item createFighterSubItem = createFighterMenu.addItem(itemName, itemListener);
 					Dimension size = createFighterSubItem.getPreferredSize();
 					createFighterSubItem.setPreferredSize(new Dimension(250, (int) size.getHeight()));
@@ -140,9 +142,9 @@ public class WorldView extends JPanel {
 				@Override
 				public void onAction(Item item) {
 					final Menu activeFighterMenu = menuView.addMenu();
-					for (Tuple<String, Item.Listener> activeFighterSubItemTuple : activeFighterSubItems) {
-						String itemName = activeFighterSubItemTuple.getA();
-						Item.Listener itemListener = activeFighterSubItemTuple.getB();
+					for (SimpleEntry<String, Item.Listener> activeFighterSubItemEntry : activeFighterSubItems) {
+						String itemName = activeFighterSubItemEntry.getKey();
+						Item.Listener itemListener = activeFighterSubItemEntry.getValue();
 						Item activeFighterSubItem = activeFighterMenu.addItem(itemName, itemListener);
 						Dimension size = activeFighterSubItem.getPreferredSize();
 						activeFighterSubItem.setPreferredSize(new Dimension(250, (int) size.getHeight()));
@@ -157,9 +159,9 @@ public class WorldView extends JPanel {
 				@Override
 				public void onAction(Item item) {
 					final Menu upgradeFighterMenu = menuView.addMenu();
-					for (Tuple<String, Item.Listener> upgradeFighterSubItemTuple : upgradeFighterSubItems) {
-						String itemName = upgradeFighterSubItemTuple.getA();
-						Item.Listener itemListener = upgradeFighterSubItemTuple.getB();
+					for (SimpleEntry<String, Item.Listener> upgradeFighterSubItemEntry : upgradeFighterSubItems) {
+						String itemName = upgradeFighterSubItemEntry.getKey();
+						Item.Listener itemListener = upgradeFighterSubItemEntry.getValue();
 						Item upgradeFighterSubItem = upgradeFighterMenu.addItem(itemName, itemListener);
 						Dimension size = upgradeFighterSubItem.getPreferredSize();
 						upgradeFighterSubItem.setPreferredSize(new Dimension(250, (int) size.getHeight()));
@@ -175,9 +177,9 @@ public class WorldView extends JPanel {
 					@Override
 					public void onAction(Item item) {
 						final Menu assignAttackMenu = menuView.addMenu();
-						for (Tuple<String, Item.Listener> assignAttackSubItemTuple : assignFighterAttackSubItems) {
-							String itemName = assignAttackSubItemTuple.getA();
-							Item.Listener itemListener = assignAttackSubItemTuple.getB();
+						for (SimpleEntry<String, Item.Listener> assignAttackSubItemEntry : assignFighterAttackSubItems) {
+							String itemName = assignAttackSubItemEntry.getKey();
+							Item.Listener itemListener = assignAttackSubItemEntry.getValue();
 							Item assignAttackSubItem = assignAttackMenu.addItem(itemName, itemListener);
 							Dimension size = assignAttackSubItem.getPreferredSize();
 							assignAttackSubItem.setPreferredSize(new Dimension(300, (int) size.getHeight()));

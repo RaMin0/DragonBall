@@ -15,7 +15,8 @@ public class PhysicalAttack extends Attack {
 	}
 
 	@Override
-	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking)
+			throws InvalidAttackException {
 		super.onUse(attacker, defender, defenderBlocking);
 
 		// increment ki by 1

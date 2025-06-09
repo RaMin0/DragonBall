@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
+import java.io.InputStream;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +32,11 @@ public class GameView extends JFrame {
 	static {
 		Font font;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("res" + File.separator + "8-bit.ttf"));
+			InputStream is = GameView.class.getClassLoader().getResourceAsStream("res/8-bit.ttf");
+			if (is == null) {
+				throw new Exception("Resource not found: res/8-bit.ttf");
+			}
+			font = Font.createFont(Font.TRUETYPE_FONT, is);
 			GraphicsEnvironment gc = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			gc.registerFont(font);
 		} catch (Exception e) {
@@ -45,7 +49,7 @@ public class GameView extends JFrame {
 	public GameView(int worldSize) {
 		setTitle("Dragon Ball");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(100, 100);
+		setLocation(0, 0);
 		setResizable(false);
 		getContentPane().setLayout(null);
 

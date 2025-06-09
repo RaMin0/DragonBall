@@ -136,8 +136,7 @@ public class World implements CellListener {
 	}
 
 	private void moveTo(int row, int column) throws InvalidMoveException {
-		if (row >= 0 && row < MAP_SIZE
-				&& column >= 0 && column < MAP_SIZE) {
+		if (row >= 0 && row < MAP_SIZE && column >= 0 && column < MAP_SIZE) {
 			Cell cell = map[row][column];
 			map[row][column] = new EmptyCell();
 			playerRow = row;

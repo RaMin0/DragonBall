@@ -10,8 +10,8 @@ public class Majin extends PlayableFighter {
 		super(name, 1500, 50, 50, 3, 6);
 	}
 
-	public Majin(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage,
-			int physicalDamage, int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
+	public Majin(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage, int physicalDamage,
+			int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
 			ArrayList<UltimateAttack> ultimateAttacks) {
 		super(name, level, xp, targetXp, maxHealthPoints, blastDamage, physicalDamage, abilityPoints, maxKi, maxStamina,
 				superAttacks, ultimateAttacks);

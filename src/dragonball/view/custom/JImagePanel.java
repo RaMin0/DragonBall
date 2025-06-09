@@ -3,6 +3,7 @@ package dragonball.view.custom;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.net.URL;
 
 import javax.swing.JPanel;
 
@@ -19,7 +20,11 @@ public class JImagePanel extends JPanel {
 	}
 
 	public void setImage(String filename) {
-		setImage(Toolkit.getDefaultToolkit().createImage(filename));
+		URL url = getClass().getResource(filename);
+		if (url == null) {
+			throw new IllegalArgumentException("Resource not found: " + filename);
+		}
+		setImage(Toolkit.getDefaultToolkit().createImage(url));
 	}
 
 	public void setImage(Image image) {

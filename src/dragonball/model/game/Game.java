@@ -1,9 +1,9 @@
 package dragonball.model.game;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -92,7 +92,11 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 		BufferedReader reader = null;
 		String line = null;
 		try {
-			reader = new BufferedReader(new FileReader(filePath));
+			InputStream is = getClass().getClassLoader().getResourceAsStream(filePath);
+			if (is == null) {
+				throw new IOException("Resource not found: " + filePath);
+			}
+			reader = new BufferedReader(new InputStreamReader(is));
 			while ((line = reader.readLine()) != null) {
 				lines.add(line.split(","));
 			}
@@ -172,8 +176,8 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 				}
 			}
 
-			NonPlayableFighter foe = new NonPlayableFighter(name, level, maxHealthPoints, blastDamage, physicalDamage,
-					maxKi, maxStamina, strong, superAttacks, ultimateAttacks);
+			NonPlayableFighter foe = new NonPlayableFighter(name, level, maxHealthPoints, blastDamage, physicalDamage, maxKi,
+					maxStamina, strong, superAttacks, ultimateAttacks);
 			if (strong) {
 				strongFoes.add(foe);
 			} else {
@@ -212,8 +216,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 				}
 			}
 
-			Dragon dragon = new Dragon(name, superAttacks, ultimateAttacks, senzuBeans,
-					dragonsBalls);
+			Dragon dragon = new Dragon(name, superAttacks, ultimateAttacks, senzuBeans, dragonsBalls);
 			dragons.add(dragon);
 		}
 	}
@@ -246,22 +249,21 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 	@Override
 	public void onCollectibleFound(Collectible collectible) {
 		switch (collectible) {
-		case SENZU_BEAN:
-			player.setSenzuBeans(player.getSenzuBeans() + 1);
-			notifyOnCollectibleFound(collectible);
-			break;
-		case DRAGON_BALL:
-			player.setDragonBalls(player.getDragonBalls() + 1);
-			notifyOnCollectibleFound(collectible);
+			case SENZU_BEAN:
+				player.setSenzuBeans(player.getSenzuBeans() + 1);
+				notifyOnCollectibleFound(collectible);
+				break;
+			case DRAGON_BALL:
+				player.setDragonBalls(player.getDragonBalls() + 1);
+				notifyOnCollectibleFound(collectible);
 
-			try {
-				// try to call the dragon. it will fail if not enough dragon balls
-				// are collected
-				player.callDragon();
-			} catch (NotEnoughCollectiblesException e) {
-				e.printStackTrace();
-			}
-			break;
+				try {
+					// try to call the dragon. it will fail if not enough dragon balls are collected
+					player.callDragon();
+				} catch (NotEnoughCollectiblesException e) {
+					e.printStackTrace();
+				}
+				break;
 		}
 	}
 
@@ -295,7 +297,7 @@ public class Game implements PlayerListener, WorldListener, BattleListener {
 
 					// reload foes in case range changed
 					int foesRange = (player.getMaxFighterLevel() - 1) / 10 + 1;
-					loadFoes("." + File.separator + "Database-Foes-Range" + foesRange + ".csv");
+					loadFoes("Database-Foes-Range" + foesRange + ".csv");
 
 					// regenerate map
 					world.generateMap(weakFoes, strongFoes);

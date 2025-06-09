@@ -16,6 +16,10 @@ public abstract class PlayableFighter extends Fighter implements PlayableCharact
 	private int targetXp;
 	private int abilityPoints;
 
+	public static Class<?>[] getPlayableFighters() {
+		return new Class<?>[] { Earthling.class, Frieza.class, Majin.class, Namekian.class, Saiyan.class };
+	}
+
 	public PlayableFighter(String name, int maxHealthPoints, int blastDamage, int physicalDamage, int maxKi,
 			int maxStamina) {
 		this(name, maxHealthPoints, blastDamage, physicalDamage, maxKi, maxStamina, new ArrayList<SuperAttack>(),
@@ -31,8 +35,7 @@ public abstract class PlayableFighter extends Fighter implements PlayableCharact
 	public PlayableFighter(String name, int level, int xp, int targetXp, int maxHealthPoints, int blastDamage,
 			int physicalDamage, int abilityPoints, int maxKi, int maxStamina, ArrayList<SuperAttack> superAttacks,
 			ArrayList<UltimateAttack> ultimateAttacks) {
-		super(name, level, maxHealthPoints, blastDamage, physicalDamage, maxKi, maxStamina, superAttacks,
-				ultimateAttacks);
+		super(name, level, maxHealthPoints, blastDamage, physicalDamage, maxKi, maxStamina, superAttacks, ultimateAttacks);
 		this.xp = xp;
 		this.targetXp = targetXp;
 		this.abilityPoints = abilityPoints;

@@ -24,14 +24,14 @@ public class DragonWish extends EventObject {
 		this(dragon, type);
 
 		switch (type) {
-		case SENZU_BEANS:
-			senzuBeans = senzuBeansOrAbilityPoints;
-			break;
-		case ABILITY_POINTS:
-			abilityPoints = senzuBeansOrAbilityPoints;
-			break;
-		default:
-			break;
+			case SENZU_BEANS:
+				senzuBeans = senzuBeansOrAbilityPoints;
+				break;
+			case ABILITY_POINTS:
+				abilityPoints = senzuBeansOrAbilityPoints;
+				break;
+			default:
+				break;
 		}
 	}
 

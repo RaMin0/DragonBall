@@ -17,7 +17,8 @@ public class UltimateAttack extends Attack {
 	}
 
 	@Override
-	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking) throws InvalidAttackException {
+	public void onUse(BattleOpponent attacker, BattleOpponent defender, boolean defenderBlocking)
+			throws InvalidAttackException {
 		Fighter attackerFighter = (Fighter) attacker;
 
 		// only decrement ki by 3 if fighter is not a transformed saiyan

@@ -35,8 +35,8 @@ public class Player {
 	private PlayerListener listener;
 
 	public Player(String name) {
-		this(name, new ArrayList<PlayableFighter>(), new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), 0,
-				0, null, 0);
+		this(name, new ArrayList<PlayableFighter>(), new ArrayList<SuperAttack>(), new ArrayList<UltimateAttack>(), 0, 0,
+				null, 0);
 	}
 
 	public Player(String name, ArrayList<PlayableFighter> fighters, ArrayList<SuperAttack> superAttacks,
@@ -131,27 +131,26 @@ public class Player {
 		return maxLevel;
 	}
 
-	public void createFighter(char race, String name)
-			throws InvalidFighterRaceException {
+	public void createFighter(char race, String name) throws InvalidFighterRaceException {
 		PlayableFighter fighter = null;
 		switch (race) {
-		case 'E':
-			fighter = new Earthling(name);
-			break;
-		case 'S':
-			fighter = new Saiyan(name);
-			break;
-		case 'N':
-			fighter = new Namekian(name);
-			break;
-		case 'F':
-			fighter = new Frieza(name);
-			break;
-		case 'M':
-			fighter = new Majin(name);
-			break;
-		default:
-			throw new InvalidFighterRaceException(race);
+			case 'E':
+				fighter = new Earthling(name);
+				break;
+			case 'S':
+				fighter = new Saiyan(name);
+				break;
+			case 'N':
+				fighter = new Namekian(name);
+				break;
+			case 'F':
+				fighter = new Frieza(name);
+				break;
+			case 'M':
+				fighter = new Majin(name);
+				break;
+			default:
+				throw new InvalidFighterRaceException(race);
 		}
 
 		fighters.add(fighter);
@@ -169,23 +168,23 @@ public class Player {
 
 		if (fighter.getAbilityPoints() > 0) {
 			switch (fighterAttribute) {
-			case 'H':
-				fighter.setMaxHealthPoints(fighter.getMaxHealthPoints() + 50);
-				break;
-			case 'B':
-				fighter.setBlastDamage(fighter.getBlastDamage() + 50);
-				break;
-			case 'P':
-				fighter.setPhysicalDamage(fighter.getPhysicalDamage() + 50);
-				break;
-			case 'K':
-				fighter.setMaxKi(fighter.getMaxKi() + 1);
-				break;
-			case 'S':
-				fighter.setMaxStamina(fighter.getMaxStamina() + 1);
-				break;
-			default:
-				throw new InvalidFighterAttributeException(fighterAttribute);
+				case 'H':
+					fighter.setMaxHealthPoints(fighter.getMaxHealthPoints() + 50);
+					break;
+				case 'B':
+					fighter.setBlastDamage(fighter.getBlastDamage() + 50);
+					break;
+				case 'P':
+					fighter.setPhysicalDamage(fighter.getPhysicalDamage() + 50);
+					break;
+				case 'K':
+					fighter.setMaxKi(fighter.getMaxKi() + 1);
+					break;
+				case 'S':
+					fighter.setMaxStamina(fighter.getMaxStamina() + 1);
+					break;
+				default:
+					throw new InvalidFighterAttributeException(fighterAttribute);
 			}
 
 			fighter.setAbilityPoints(fighter.getAbilityPoints() - 1);
@@ -237,20 +236,20 @@ public class Player {
 
 	public void chooseWish(DragonWish wish) {
 		switch (wish.getType()) {
-		case SENZU_BEANS:
-			senzuBeans += wish.getSenzuBeans();
-			break;
-		case ABILITY_POINTS:
-			activeFighter.setAbilityPoints(activeFighter.getAbilityPoints() + wish.getAbilityPoints());
-			break;
-		case SUPER_ATTACK:
-			superAttacks.add(wish.getSuperAttack());
-			break;
-		case ULTIMATE_ATTACK:
-			ultimateAttacks.add(wish.getUltimateAttack());
-			break;
-		default:
-			break;
+			case SENZU_BEANS:
+				senzuBeans += wish.getSenzuBeans();
+				break;
+			case ABILITY_POINTS:
+				activeFighter.setAbilityPoints(activeFighter.getAbilityPoints() + wish.getAbilityPoints());
+				break;
+			case SUPER_ATTACK:
+				superAttacks.add(wish.getSuperAttack());
+				break;
+			case ULTIMATE_ATTACK:
+				ultimateAttacks.add(wish.getUltimateAttack());
+				break;
+			default:
+				break;
 		}
 
 		notifyOnWishChosen(wish);

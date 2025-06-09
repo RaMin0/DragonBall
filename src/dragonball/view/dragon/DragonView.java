@@ -3,8 +3,7 @@ package dragonball.view.dragon;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -25,7 +24,7 @@ public class DragonView extends JImagePanel {
 
 	public DragonView() {
 		setLayout(null);
-		setImage("gfx" + File.separator + "dragon.gif");
+		setImage("/gfx/dragon.gif");
 	}
 
 	public void initComponents() {
@@ -47,8 +46,11 @@ public class DragonView extends JImagePanel {
 
 		try {
 			clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(
-					new BufferedInputStream(new FileInputStream("sfx" + File.separator + "dragon.wav"))));
+			InputStream audioStream = getClass().getClassLoader().getResourceAsStream("sfx/dragon.wav");
+			if (audioStream == null) {
+				throw new Exception("Resource not found: sfx/dragon.wav");
+			}
+			clip.open(AudioSystem.getAudioInputStream(new BufferedInputStream(audioStream)));
 			clip.addLineListener(new LineListener() {
 				@Override
 				public void update(LineEvent event) {

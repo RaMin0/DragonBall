@@ -31,7 +31,8 @@ public class Battle {
 		meFighter.setHealthPoints(meFighter.getMaxHealthPoints());
 		meFighter.setKi(0);
 		meFighter.setStamina(meFighter.getMaxStamina());
-		// reset a saiyan's transformation state in case it was transformed in a previous battle
+		// reset a saiyan's transformation state in case it was transformed in a
+		// previous battle
 		if (me instanceof Saiyan) {
 			Saiyan meSaiyan = (Saiyan) me;
 			meSaiyan.setTransformed(false);
@@ -157,21 +158,21 @@ public class Battle {
 	// use a collectible and end turn
 	public void use(Player player, Collectible collectible) throws NotEnoughCollectiblesException {
 		switch (collectible) {
-		case SENZU_BEAN:
-			if (player.getSenzuBeans() > 0) {
-				PlayableFighter activeFighter = player.getActiveFighter();
-				activeFighter.setHealthPoints(activeFighter.getMaxHealthPoints());
-				activeFighter.setStamina(activeFighter.getMaxStamina());
+			case SENZU_BEAN:
+				if (player.getSenzuBeans() > 0) {
+					PlayableFighter activeFighter = player.getActiveFighter();
+					activeFighter.setHealthPoints(activeFighter.getMaxHealthPoints());
+					activeFighter.setStamina(activeFighter.getMaxStamina());
 
-				player.setSenzuBeans(player.getSenzuBeans() - 1);
+					player.setSenzuBeans(player.getSenzuBeans() - 1);
 
-				notifyOnBattleEvent(new BattleEvent(this, BattleEventType.USE, collectible));
-			} else {
-				throw new NotEnoughCollectiblesException(Collectible.SENZU_BEAN);
-			}
-			break;
-		default:
-			break;
+					notifyOnBattleEvent(new BattleEvent(this, BattleEventType.USE, collectible));
+				} else {
+					throw new NotEnoughCollectiblesException(Collectible.SENZU_BEAN);
+				}
+				break;
+			default:
+				break;
 		}
 
 		endTurn();
